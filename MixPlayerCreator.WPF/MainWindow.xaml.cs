@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using MixPlayCreator.Base.Model.Items;
+using MixPlayerCreator.WPF.Controls.Items;
+using System.Windows;
 
 namespace MixPlayerCreator.WPF
 {
@@ -10,6 +12,21 @@ namespace MixPlayerCreator.WPF
         public MainWindow()
         {
             InitializeComponent();
+
+            this.Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemTypeModel(ItemTypeEnum.Text)));
+            this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemTypeModel(ItemTypeEnum.Picture)));
+
+            ItemControlBase.ItemSelected += ItemControlBase_ItemSelected;
+        }
+
+        private void ItemControlBase_ItemSelected(object sender, ItemTypeModel e)
+        {
+            this.ItemDetailsTextBlock.Text = e.TypeString;
         }
     }
 }
