@@ -10,11 +10,11 @@ namespace MixPlayerCreator.WPF.Controls.Items
     {
         public static event EventHandler<ItemTypeModel> ItemSelected = delegate { };
 
-        private ItemTypeModel item;
+        public ItemTypeModel Item { get; private set; }
 
         public ItemControlBase(ItemTypeModel item)
         {
-            this.item = item;
+            this.Item = item;
 
             this.Loaded += ItemControlBase_Loaded;
         }
@@ -26,7 +26,7 @@ namespace MixPlayerCreator.WPF.Controls.Items
             base.OnMouseDown(e);
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                ItemControlBase.ItemSelected(this, this.item);
+                ItemControlBase.ItemSelected(this, this.Item);
             }
         }
 

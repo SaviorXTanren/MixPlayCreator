@@ -35,7 +35,7 @@ namespace MixPlayerCreator.WPF.Controls
             e.Handled = true;
         }
 
-        private void AddElementToCanvas(FrameworkElement element, int x, int y)
+        private void AddElementToCanvas(ItemControlBase element, int x, int y)
         {
             Canvas.SetLeft(element, x);
             Canvas.SetTop(element, y);
@@ -45,11 +45,12 @@ namespace MixPlayerCreator.WPF.Controls
 
         private void Element_Loaded(object sender, RoutedEventArgs e)
         {
-            FrameworkElement element = (FrameworkElement)sender;
+            ItemControlBase element = (ItemControlBase)sender;
             int x = MathHelper.Clamp((int)Canvas.GetLeft(element) - (int)(element.ActualWidth / 2), 0, (int)this.CanvasRender.ActualWidth);
             int y = MathHelper.Clamp((int)Canvas.GetTop(element) - (int)(element.ActualHeight / 2), 0, (int)this.CanvasRender.ActualHeight);
             Canvas.SetLeft(element, x);
             Canvas.SetTop(element, y);
+            Canvas.SetZIndex(element, element.Item.ZIndex);
         }
     }
 }

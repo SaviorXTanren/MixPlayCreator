@@ -1,4 +1,5 @@
 ﻿using MixPlayCreator.Base.Model.Items;
+using MixPlayerCreator.WPF.Controls.Editors;
 using MixPlayerCreator.WPF.Controls.Items;
 using System.Windows;
 
@@ -26,7 +27,14 @@ namespace MixPlayerCreator.WPF
 
         private void ItemControlBase_ItemSelected(object sender, ItemTypeModel e)
         {
-            this.ItemDetailsTextBlock.Text = e.TypeString;
+            switch (e.Type)
+            {
+                case ItemTypeEnum.Text:
+                    this.ItemEditorContentControl.Content = new TextItemEditorControl((TextItemModel)e);
+                    break;
+                case ItemTypeEnum.Picture:
+                    break;
+            }
         }
     }
 }

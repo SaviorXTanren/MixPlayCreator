@@ -14,7 +14,7 @@
         TextElement.FontSize="14"
         FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"   
 
-        Title="MixPlay Creator" Width="800" Height="600">
+        Title="MixPlay Creator" Width="1024" Height="768">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
@@ -38,7 +38,7 @@
             </Border>
 
             <Border Grid.Row="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
-                <TextBlock x:Name="ItemDetailsTextBlock" />
+                <ContentControl x:Name="ItemEditorContentControl" Margin="15" />
             </Border>
         </Grid>
     </Grid>

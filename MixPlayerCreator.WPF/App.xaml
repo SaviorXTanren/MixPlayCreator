@@ -19,6 +19,10 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListView.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <Style x:Key="HeaderTextBlock" TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                <Setter Property="FontWeight" Value="Bold" />
+            </Style>
+
             <Style x:Key="StandardDataGrid" TargetType="DataGrid" BasedOn="{StaticResource MaterialDesignDataGrid}">
                 <Setter Property="SelectionMode" Value="Single" />
                 <Setter Property="CanUserSortColumns" Value="True" />

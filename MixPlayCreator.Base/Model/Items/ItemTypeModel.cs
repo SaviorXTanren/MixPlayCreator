@@ -16,6 +16,9 @@ namespace MixPlayCreator.Base.Model.Items
         [DataMember]
         public ItemTypeEnum Type { get; set; }
 
+        [DataMember]
+        public int ZIndex { get; set; }
+
         public ItemTypeModel() { }
 
         public ItemTypeModel(ItemTypeEnum type)
