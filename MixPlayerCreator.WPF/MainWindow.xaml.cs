@@ -23,19 +23,26 @@ namespace MixPlayerCreator.WPF
             this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel(ItemTypeEnum.Text)));
             this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel(ItemTypeEnum.Picture)));
 
-            ItemControlBase.ItemSelected += ItemControlBase_ItemSelected;
+            ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
         }
 
-        private void ItemControlBase_ItemSelected(object sender, ItemViewModel e)
+        private void ItemControlBase_ItemSelectionChanged(object sender, ItemViewModel e)
         {
-            switch (e.Type)
+            if (e != null)
             {
-                case ItemTypeEnum.Text:
-                    this.ItemEditorContentControl.Content = new TextItemEditorControl((TextItemViewModel)e);
-                    break;
-                case ItemTypeEnum.Picture:
-                    this.ItemEditorContentControl.Content = new PictureItemEditorControl((PictureItemViewModel)e);
-                    break;
+                switch (e.Type)
+                {
+                    case ItemTypeEnum.Text:
+                        this.ItemEditorContentControl.Content = new TextItemEditorControl((TextItemViewModel)e);
+                        break;
+                    case ItemTypeEnum.Picture:
+                        this.ItemEditorContentControl.Content = new PictureItemEditorControl((PictureItemViewModel)e);
+                        break;
+                }
+            }
+            else
+            {
+                this.ItemEditorContentControl.Content = null;
             }
         }
     }

@@ -10,8 +10,6 @@ namespace MixPlayerCreator.WPF.Controls.Items
 {
     public class ItemControlBase : UserControl
     {
-        public static event EventHandler<ItemViewModel> ItemSelected = delegate { };
-
         public ItemViewModel Item { get; private set; }
         public ItemsCanvasControl ItemCanvas { get; set; }
 
@@ -25,6 +23,7 @@ namespace MixPlayerCreator.WPF.Controls.Items
 
             this.Loaded += ItemControlBase_Loaded;
             this.MouseMove += ItemControlBase_MouseMove;
+            ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
         }
 
         protected virtual Task OnLoaded() { return Task.FromResult(0); }
@@ -33,11 +32,14 @@ namespace MixPlayerCreator.WPF.Controls.Items
         {
             base.OnMouseLeftButtonDown(e);
 
-            ItemControlBase.ItemSelected(this, this.Item);
+            ItemViewModel.ItemSelected(this.Item);
 
             this.IsItemHeld = true;
+            this.Item.IsSelected = true;
             this.lastMousePosition = e.GetPosition(this.Parent as UIElement);
             this.CaptureMouse();
+
+            e.Handled = true;
         }
 
         private void ItemControlBase_MouseMove(object sender, MouseEventArgs e)
@@ -72,6 +74,11 @@ namespace MixPlayerCreator.WPF.Controls.Items
         private async void ItemControlBase_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             await this.OnLoaded();
+        }
+
+        private void ItemControlBase_ItemSelectionChanged(object sender, ItemViewModel e)
+        {
+            this.Item.IsSelected = false;
         }
     }
 }

@@ -4,6 +4,7 @@ using MixPlayCreator.Base.ViewModel.Items;
 using MixPlayerCreator.WPF.Controls.Items;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace MixPlayerCreator.WPF.Controls
 {
@@ -47,6 +48,15 @@ namespace MixPlayerCreator.WPF.Controls
             e.Handled = true;
         }
 
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            ItemViewModel.ItemSelected(null);
+
+            e.Handled = true;
+        }
+
         private void AddItemToCanvas(ItemControlBase item, int x, int y)
         {
             item.ItemCanvas = this;
@@ -61,6 +71,9 @@ namespace MixPlayerCreator.WPF.Controls
             ItemControlBase item = (ItemControlBase)sender;
             this.SetItemCoordinates(item, (int)Canvas.GetLeft(item) - (int)(item.ActualWidth / 2), (int)Canvas.GetTop(item) - (int)(item.ActualHeight / 2));
             Canvas.SetZIndex(item, item.Item.ZIndex);
+
+            ItemViewModel.ItemSelected(item.Item);
+            item.Item.IsSelected = true;
         }
     }
 }

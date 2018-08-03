@@ -6,5 +6,11 @@
              xmlns:local="clr-namespace:MixPlayerCreator.WPF.Controls.Items"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <TextBlock x:Name="TextBlock" Text="{Binding Text}" Foreground="{Binding Color}" FontSize="{Binding Size}" FontFamily="{Binding Font}" TextWrapping="Wrap" TextAlignment="Center"   />
+    <local:ItemControlBase.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </local:ItemControlBase.Resources>
+
+    <Border x:Name="Border" BorderBrush="{Binding SelectedBorderBrush}" BorderThickness="1">
+        <TextBlock x:Name="TextBlock" Text="{Binding Text}" Foreground="{Binding Color}" FontSize="{Binding Size}" FontFamily="{Binding Font}" TextWrapping="Wrap" TextAlignment="Center" />
+    </Border>
 </local:ItemControlBase>
