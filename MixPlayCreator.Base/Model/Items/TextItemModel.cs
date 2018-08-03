@@ -3,7 +3,7 @@
 namespace MixPlayCreator.Base.Model.Items
 {
     [DataContract]
-    public class TextItemModel : ItemTypeModel
+    public class TextItemModel : ItemModel
     {
         [DataMember]
         public string Text { get; set; }
@@ -17,9 +17,7 @@ namespace MixPlayCreator.Base.Model.Items
         [DataMember]
         public string Font { get; set; }
 
-        public TextItemModel() { }
-
-        public TextItemModel(string text) : this(text, 24, "Black", "Arial") { }
+        public TextItemModel() : this("Text", 24, "Black", "Arial") { }
 
         public TextItemModel(string text, int size, string color, string font)
             : base(ItemTypeEnum.Text)

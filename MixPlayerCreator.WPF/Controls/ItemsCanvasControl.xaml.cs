@@ -1,5 +1,6 @@
 ﻿using MixPlayCreator.Base.Model.Items;
 using MixPlayCreator.Base.Util;
+using MixPlayCreator.Base.ViewModel.Items;
 using MixPlayerCreator.WPF.Controls.Items;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +17,7 @@ namespace MixPlayerCreator.WPF.Controls
             InitializeComponent();
         }
 
-        public void SetItemCoordinates(ItemControlBase item, int x, int y)
+        public void SetItemCoordinates(FrameworkElement item, int x, int y)
         {
             x = MathHelper.Clamp(x, 0, (int)(this.CanvasRender.ActualWidth - item.ActualWidth));
             y = MathHelper.Clamp(y, 0, (int)(this.CanvasRender.ActualHeight - item.ActualHeight));
@@ -35,7 +36,10 @@ namespace MixPlayerCreator.WPF.Controls
                 switch (type)
                 {
                     case ItemTypeEnum.Text:
-                        this.AddItemToCanvas(new TextItemControl(new TextItemModel("Text")), (int)dropPoint.X, (int)dropPoint.Y);
+                        this.AddItemToCanvas(new TextItemControl(new TextItemViewModel()), (int)dropPoint.X, (int)dropPoint.Y);
+                        break;
+                    case ItemTypeEnum.Picture:
+                        this.AddItemToCanvas(new PictureItemControl(new PictureItemViewModel()), (int)dropPoint.X, (int)dropPoint.Y);
                         break;
                 }
                 e.Effects = DragDropEffects.Move;
@@ -55,7 +59,7 @@ namespace MixPlayerCreator.WPF.Controls
         private void Item_Loaded(object sender, RoutedEventArgs e)
         {
             ItemControlBase item = (ItemControlBase)sender;
-            this.SetItemCoordinates((ItemControlBase)sender, (int)Canvas.GetLeft(item) - (int)(item.ActualWidth / 2), (int)Canvas.GetTop(item) - (int)(item.ActualHeight / 2));
+            this.SetItemCoordinates(item, (int)Canvas.GetLeft(item) - (int)(item.ActualWidth / 2), (int)Canvas.GetTop(item) - (int)(item.ActualHeight / 2));
             Canvas.SetZIndex(item, item.Item.ZIndex);
         }
     }

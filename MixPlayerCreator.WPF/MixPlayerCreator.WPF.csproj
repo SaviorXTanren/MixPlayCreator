@@ -67,6 +67,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\Editors\PictureItemEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Editors\TextItemEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -76,6 +80,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Items\ItemTypeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Items\PictureItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -91,6 +99,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\Editors\PictureItemEditorControl.xaml.cs">
+      <DependentUpon>PictureItemEditorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Editors\TextItemEditorControl.xaml.cs">
       <DependentUpon>TextItemEditorControl.xaml</DependentUpon>
     </Compile>
@@ -100,6 +111,9 @@
     <Compile Include="Controls\Items\ItemControlBase.cs" />
     <Compile Include="Controls\Items\ItemTypeControl.xaml.cs">
       <DependentUpon>ItemTypeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Items\PictureItemControl.xaml.cs">
+      <DependentUpon>PictureItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Items\TextItemControl.xaml.cs">
       <DependentUpon>TextItemControl.xaml</DependentUpon>
@@ -145,6 +159,11 @@
       <Project>{4c64c285-5d05-4aaa-8f5a-b894e89686d3}</Project>
       <Name>MixPlayCreator.Base</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="MixItUpLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

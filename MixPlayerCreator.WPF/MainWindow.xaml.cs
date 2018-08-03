@@ -1,4 +1,5 @@
 ﻿using MixPlayCreator.Base.Model.Items;
+using MixPlayCreator.Base.ViewModel.Items;
 using MixPlayerCreator.WPF.Controls.Editors;
 using MixPlayerCreator.WPF.Controls.Items;
 using System.Windows;
@@ -19,20 +20,21 @@ namespace MixPlayerCreator.WPF
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemTypeModel(ItemTypeEnum.Text)));
-            this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemTypeModel(ItemTypeEnum.Picture)));
+            this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel(ItemTypeEnum.Text)));
+            this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel(ItemTypeEnum.Picture)));
 
             ItemControlBase.ItemSelected += ItemControlBase_ItemSelected;
         }
 
-        private void ItemControlBase_ItemSelected(object sender, ItemTypeModel e)
+        private void ItemControlBase_ItemSelected(object sender, ItemViewModel e)
         {
             switch (e.Type)
             {
                 case ItemTypeEnum.Text:
-                    this.ItemEditorContentControl.Content = new TextItemEditorControl((TextItemModel)e);
+                    this.ItemEditorContentControl.Content = new TextItemEditorControl((TextItemViewModel)e);
                     break;
                 case ItemTypeEnum.Picture:
+                    this.ItemEditorContentControl.Content = new PictureItemEditorControl((PictureItemViewModel)e);
                     break;
             }
         }

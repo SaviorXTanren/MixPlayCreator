@@ -22,10 +22,12 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
-            <Controls:ItemsCanvasControl x:Name="ItemsCanvas" />
+            <Grid Background="{DynamicResource MaterialDesignPaper}">
+                <Controls:ItemsCanvasControl x:Name="ItemsCanvas" />
+            </Grid>
         </Border>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />

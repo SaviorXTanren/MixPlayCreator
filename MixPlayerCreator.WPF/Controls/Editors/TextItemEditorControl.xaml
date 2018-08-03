@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" x:Name="TextTextBox" MaterialDesign:HintAssist.Hint="Text" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Text}" />
+        <TextBox Grid.Row="0" x:Name="TextTextBox" MaterialDesign:HintAssist.Hint="Text" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" />
 
         <ComboBox Grid.Row="2" x:Name="SizeComboBox" IsEditable="True" MaterialDesign:HintAssist.Hint="Size" Style="{StaticResource MaterialDesignFloatingHintComboBox}" Text="{Binding Size}" />
 

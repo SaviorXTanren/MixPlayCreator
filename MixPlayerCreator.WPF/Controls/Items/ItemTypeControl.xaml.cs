@@ -10,9 +10,9 @@ namespace MixPlayerCreator.WPF.Controls.Items
     /// </summary>
     public partial class ItemTypeControl : UserControl
     {
-        private ItemTypeModel itemType;
+        private ItemModel itemType;
 
-        public ItemTypeControl(ItemTypeModel itemType)
+        public ItemTypeControl(ItemModel itemType)
         {
             this.itemType = itemType;
 

@@ -1,4 +1,4 @@
-﻿using MixPlayCreator.Base.Model.Items;
+﻿using MixPlayCreator.Base.ViewModel.Items;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,16 +10,16 @@ namespace MixPlayerCreator.WPF.Controls.Items
 {
     public class ItemControlBase : UserControl
     {
-        public static event EventHandler<ItemTypeModel> ItemSelected = delegate { };
+        public static event EventHandler<ItemViewModel> ItemSelected = delegate { };
 
-        public ItemTypeModel Item { get; private set; }
+        public ItemViewModel Item { get; private set; }
         public ItemsCanvasControl ItemCanvas { get; set; }
 
         public bool IsItemHeld { get; private set; }
 
         private Point lastMousePosition;
 
-        public ItemControlBase(ItemTypeModel item)
+        public ItemControlBase(ItemViewModel item)
         {
             this.Item = item;
 

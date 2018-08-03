@@ -1,4 +1,4 @@
-﻿using MixPlayCreator.Base.Model.Items;
+﻿using MixPlayCreator.Base.ViewModel.Items;
 using System.Windows.Controls;
 
 namespace MixPlayerCreator.WPF.Controls.Editors
@@ -8,9 +8,9 @@ namespace MixPlayerCreator.WPF.Controls.Editors
     /// </summary>
     public partial class TextItemEditorControl : UserControl
     {
-        private TextItemModel item;
+        private TextItemViewModel item;
 
-        public TextItemEditorControl(TextItemModel item)
+        public TextItemEditorControl(TextItemViewModel item)
         {
             this.item = item;
 

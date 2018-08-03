@@ -1,5 +1,6 @@
 ﻿using Mixer.Base.Util;
 using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
 namespace MixPlayCreator.Base.Model.Items
@@ -11,7 +12,7 @@ namespace MixPlayCreator.Base.Model.Items
     }
 
     [DataContract]
-    public class ItemTypeModel
+    public class ItemModel
     {
         [DataMember]
         public ItemTypeEnum Type { get; set; }
@@ -19,9 +20,9 @@ namespace MixPlayCreator.Base.Model.Items
         [DataMember]
         public int ZIndex { get; set; }
 
-        public ItemTypeModel() { }
+        public ItemModel() { }
 
-        public ItemTypeModel(ItemTypeEnum type)
+        public ItemModel(ItemTypeEnum type)
         {
             this.Type = type;
         }
