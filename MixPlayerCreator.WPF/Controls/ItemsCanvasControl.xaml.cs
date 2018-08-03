@@ -16,6 +16,14 @@ namespace MixPlayerCreator.WPF.Controls
             InitializeComponent();
         }
 
+        public void SetItemCoordinates(ItemControlBase item, int x, int y)
+        {
+            x = MathHelper.Clamp(x, 0, (int)(this.CanvasRender.ActualWidth - item.ActualWidth));
+            y = MathHelper.Clamp(y, 0, (int)(this.CanvasRender.ActualHeight - item.ActualHeight));
+            Canvas.SetLeft(item, x);
+            Canvas.SetTop(item, y);
+        }
+
         protected override void OnDrop(DragEventArgs e)
         {
             base.OnDrop(e);
@@ -27,7 +35,7 @@ namespace MixPlayerCreator.WPF.Controls
                 switch (type)
                 {
                     case ItemTypeEnum.Text:
-                        this.AddElementToCanvas(new TextItemControl(new TextItemModel("Text")), (int)dropPoint.X, (int)dropPoint.Y);
+                        this.AddItemToCanvas(new TextItemControl(new TextItemModel("Text")), (int)dropPoint.X, (int)dropPoint.Y);
                         break;
                 }
                 e.Effects = DragDropEffects.Move;
@@ -35,22 +43,20 @@ namespace MixPlayerCreator.WPF.Controls
             e.Handled = true;
         }
 
-        private void AddElementToCanvas(ItemControlBase element, int x, int y)
+        private void AddItemToCanvas(ItemControlBase item, int x, int y)
         {
-            Canvas.SetLeft(element, x);
-            Canvas.SetTop(element, y);
-            element.Loaded += Element_Loaded;
-            this.CanvasRender.Children.Add(element);
+            item.ItemCanvas = this;
+            Canvas.SetLeft(item, x);
+            Canvas.SetTop(item, y);
+            item.Loaded += Item_Loaded;
+            this.CanvasRender.Children.Add(item);
         }
 
-        private void Element_Loaded(object sender, RoutedEventArgs e)
+        private void Item_Loaded(object sender, RoutedEventArgs e)
         {
-            ItemControlBase element = (ItemControlBase)sender;
-            int x = MathHelper.Clamp((int)Canvas.GetLeft(element) - (int)(element.ActualWidth / 2), 0, (int)this.CanvasRender.ActualWidth);
-            int y = MathHelper.Clamp((int)Canvas.GetTop(element) - (int)(element.ActualHeight / 2), 0, (int)this.CanvasRender.ActualHeight);
-            Canvas.SetLeft(element, x);
-            Canvas.SetTop(element, y);
-            Canvas.SetZIndex(element, element.Item.ZIndex);
+            ItemControlBase item = (ItemControlBase)sender;
+            this.SetItemCoordinates((ItemControlBase)sender, (int)Canvas.GetLeft(item) - (int)(item.ActualWidth / 2), (int)Canvas.GetTop(item) - (int)(item.ActualHeight / 2));
+            Canvas.SetZIndex(item, item.Item.ZIndex);
         }
     }
 }
