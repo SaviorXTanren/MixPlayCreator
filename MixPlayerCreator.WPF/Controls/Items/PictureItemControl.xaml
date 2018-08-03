@@ -12,9 +12,9 @@
 
     <Border x:Name="Border" BorderBrush="{Binding SelectedBorderBrush}" BorderThickness="1">
         <Grid>
-            <Image x:Name="StaticImage" Source="{Binding SourceUri}" Visibility="{Binding StaticImageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Width="{Binding Width}" Height="{Binding Height}" Stretch="Fill" />
+            <Image x:Name="StaticImage" Source="{Binding SourceUri}" Visibility="{Binding StaticImageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Width="{Binding Width}" Height="{Binding Height}" Opacity="{Binding VisibleOpacity}" Stretch="Fill" />
 
-            <MediaElement Name="GifImage" Source="{Binding SourcePath}" Visibility="{Binding GifImageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Width="{Binding Width}" Height="{Binding Height}" LoadedBehavior="Play" Stretch="Fill" SpeedRatio="1" IsMuted="False" />
+            <MediaElement Name="GifImage" Source="{Binding SourcePath}" Visibility="{Binding GifImageVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Width="{Binding Width}" Height="{Binding Height}" Opacity="{Binding VisibleOpacity}" LoadedBehavior="Play" Stretch="Fill" SpeedRatio="1" IsMuted="False" />
         </Grid>
     </Border>
 </local:ItemControlBase>

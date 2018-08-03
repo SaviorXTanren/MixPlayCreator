@@ -11,6 +11,6 @@
     </local:ItemControlBase.Resources>
 
     <Border x:Name="Border" BorderBrush="{Binding SelectedBorderBrush}" BorderThickness="1">
-        <TextBlock x:Name="TextBlock" Text="{Binding Text}" Foreground="{Binding Color}" FontSize="{Binding Size}" FontFamily="{Binding Font}" TextWrapping="Wrap" TextAlignment="Center" />
+        <TextBlock x:Name="TextBlock" Text="{Binding Text}" Foreground="{Binding Color}" FontSize="{Binding Size}" FontFamily="{Binding Font}" Opacity="{Binding VisibleOpacity}" TextWrapping="Wrap" TextAlignment="Center" />
     </Border>
 </local:ItemControlBase>

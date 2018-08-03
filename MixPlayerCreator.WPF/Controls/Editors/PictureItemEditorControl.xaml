@@ -10,9 +10,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
+            <RowDefinition Height="20" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
+            <RowDefinition Height="20" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -27,8 +27,27 @@
             <Button Grid.Column="2" x:Name="SourcePathBrowseButton" Click="SourcePathBrowseButton_Click">...</Button>
         </Grid>
 
-        <TextBox Grid.Row="2" x:Name="WidthComboBox" MaterialDesign:HintAssist.Hint="Width (Pixels)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" />
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <TextBox Grid.Row="4" x:Name="HeightComboBox" MaterialDesign:HintAssist.Hint="Height (Pixels)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Grid.Column="0" x:Name="WidthComboBox" MaterialDesign:HintAssist.Hint="Width (Pixels)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBox Grid.Column="2" x:Name="HeightComboBox" MaterialDesign:HintAssist.Hint="Height (Pixels)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0">Visible:</TextBlock>
+            <CheckBox x:Name="VisibleCheckBox" Grid.Column="2" Checked="VisibleCheckBox_Checked" Unchecked="VisibleCheckBox_Checked" />
+        </Grid>
     </Grid>
 </UserControl>

@@ -14,7 +14,7 @@ namespace MixPlayCreator.Base.Model.Items
         [DataMember]
         public int Height { get; set; }
 
-        public PictureItemModel() : this("/MixItUpLogo.png", 50, 50) { }
+        public PictureItemModel() : this("/Assets/MixItUpLogo.png", 50, 50) { }
 
         public PictureItemModel(string sourcePath, int width, int height)
             : base(ItemTypeEnum.Picture)

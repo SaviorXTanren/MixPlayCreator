@@ -17,6 +17,12 @@ namespace MixPlayerCreator.WPF.Controls.Editors
             InitializeComponent();
 
             this.DataContext = this.item;
+            this.VisibleCheckBox.IsChecked = this.item.IsVisible;
+        }
+
+        private void VisibleCheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.item.IsVisible = this.VisibleCheckBox.IsChecked.GetValueOrDefault();
         }
     }
 }

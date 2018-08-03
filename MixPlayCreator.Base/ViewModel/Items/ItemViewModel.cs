@@ -1,4 +1,5 @@
-﻿using MixPlayCreator.Base.Model.Items;
+﻿using MixPlayCreator.Base.Model.Interactive;
+using MixPlayCreator.Base.Model.Items;
 using System;
 using System.ComponentModel;
 
@@ -22,6 +23,17 @@ namespace MixPlayCreator.Base.ViewModel.Items
             }
         }
 
+        public bool IsVisible
+        {
+            get { return this.Model.IsVisible; }
+            set
+            {
+                this.Model.IsVisible = value;
+                this.NotifyPropertyChanged("IsVisible");
+                this.NotifyPropertyChanged("VisibleOpacity");
+            }
+        }
+
         public int ZIndex
         {
             get { return this.Model.ZIndex; }
@@ -29,6 +41,16 @@ namespace MixPlayCreator.Base.ViewModel.Items
             {
                 this.Model.ZIndex = value;
                 this.NotifyPropertyChanged("ZIndex");
+            }
+        }
+
+        public InteractiveModelBase Interactive
+        {
+            get { return this.Model.Interactive; }
+            set
+            {
+                this.Model.Interactive = value;
+                this.NotifyPropertyChanged("Interactive");
             }
         }
 
@@ -57,5 +79,7 @@ namespace MixPlayCreator.Base.ViewModel.Items
         }
 
         public string SelectedBorderBrush { get { return (this.IsSelected) ? "DarkBlue" : "Transparent"; } }
+
+        public double VisibleOpacity { get { return (this.IsVisible) ? 1.0 : 0.25; } }
     }
 }

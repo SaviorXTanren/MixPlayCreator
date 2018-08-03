@@ -35,7 +35,10 @@
 
             <Border Grid.Row="0" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-                    <StackPanel x:Name="ItemsTypeStackPanel" />
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">Item Types:</TextBlock>
+                        <StackPanel x:Name="ItemsTypeStackPanel" Margin="0,10" />
+                    </StackPanel>
                 </ScrollViewer>
             </Border>
 
