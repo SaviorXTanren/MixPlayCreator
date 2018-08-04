@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MixPlayCreator.Base.ViewModel;
 using System.Windows;
 
 namespace MixPlayerCreator.WPF
@@ -13,5 +8,7 @@ namespace MixPlayerCreator.WPF
     /// </summary>
     public partial class App : Application
     {
+        public static CDKProjectViewModel Project { get; set; }
+        public static SceneViewModel CurrentScene { get; set; }
     }
 }

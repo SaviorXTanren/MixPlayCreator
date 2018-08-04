@@ -26,6 +26,11 @@ namespace MixPlayerCreator.WPF.Controls
             Canvas.SetTop(item, y);
         }
 
+        public void RemoveSelectedItem(FrameworkElement item)
+        {
+            this.CanvasRender.Children.Remove(item);
+        }
+
         protected override void OnDrop(DragEventArgs e)
         {
             base.OnDrop(e);
@@ -39,8 +44,8 @@ namespace MixPlayerCreator.WPF.Controls
                     case ItemTypeEnum.Text:
                         this.AddItemToCanvas(new TextItemControl(new TextItemViewModel()), (int)dropPoint.X, (int)dropPoint.Y);
                         break;
-                    case ItemTypeEnum.Picture:
-                        this.AddItemToCanvas(new PictureItemControl(new PictureItemViewModel()), (int)dropPoint.X, (int)dropPoint.Y);
+                    case ItemTypeEnum.Image:
+                        this.AddItemToCanvas(new ImageItemControl(new ImageItemViewModel()), (int)dropPoint.X, (int)dropPoint.Y);
                         break;
                 }
                 e.Effects = DragDropEffects.Move;
@@ -59,10 +64,12 @@ namespace MixPlayerCreator.WPF.Controls
 
         private void AddItemToCanvas(ItemControlBase item, int x, int y)
         {
+            App.CurrentScene.Items.Add(item.Item);
             item.ItemCanvas = this;
+            item.Loaded += Item_Loaded;
+
             Canvas.SetLeft(item, x);
             Canvas.SetTop(item, y);
-            item.Loaded += Item_Loaded;
             this.CanvasRender.Children.Add(item);
         }
 

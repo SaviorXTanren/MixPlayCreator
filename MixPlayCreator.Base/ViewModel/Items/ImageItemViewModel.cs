@@ -4,7 +4,7 @@ using System.IO;
 
 namespace MixPlayCreator.Base.ViewModel.Items
 {
-    public class PictureItemViewModel : ItemViewModel
+    public class ImageItemViewModel : ItemViewModel
     {
         public string SourcePath
         {
@@ -39,11 +39,11 @@ namespace MixPlayCreator.Base.ViewModel.Items
             }
         }
 
-        public new PictureItemModel Model { get; private set; }
+        public new ImageItemModel Model { get; private set; }
 
-        public PictureItemViewModel() : this(new PictureItemModel()) { }
+        public ImageItemViewModel() : this(new ImageItemModel()) { }
 
-        public PictureItemViewModel(PictureItemModel model) : base(model) { this.Model = model; }
+        public ImageItemViewModel(ImageItemModel model) : base(model) { this.Model = model; }
 
         public Uri SourceUri { get { return new Uri(this.SourcePath, UriKind.RelativeOrAbsolute); } }
 

@@ -3,7 +3,7 @@
 namespace MixPlayCreator.Base.Model.Items
 {
     [DataContract]
-    public class PictureItemModel : ItemModel
+    public class ImageItemModel : ItemModel
     {
         [DataMember]
         public string SourcePath { get; set; }
@@ -14,10 +14,10 @@ namespace MixPlayCreator.Base.Model.Items
         [DataMember]
         public int Height { get; set; }
 
-        public PictureItemModel() : this("/Assets/MixItUpLogo.png", 50, 50) { }
+        public ImageItemModel() : this("Image", "/Assets/MixItUpLogo.png", 50, 50) { }
 
-        public PictureItemModel(string sourcePath, int width, int height)
-            : base(ItemTypeEnum.Picture)
+        public ImageItemModel(string name, string sourcePath, int width, int height)
+            : base(name, ItemTypeEnum.Image)
         {
             this.SourcePath = sourcePath;
             this.Width = width;

@@ -8,12 +8,17 @@ namespace MixPlayCreator.Base.Model.Items
     public enum ItemTypeEnum
     {
         Text = 0,
-        Picture = 1,
+        Image = 1,
+        Shape = 2,
+        Video = 3
     }
 
     [DataContract]
     public class ItemModel
     {
+        [DataMember]
+        public string Name { get; set; }
+
         [DataMember]
         public ItemTypeEnum Type { get; set; }
 
@@ -28,8 +33,9 @@ namespace MixPlayCreator.Base.Model.Items
 
         public ItemModel() { }
 
-        public ItemModel(ItemTypeEnum type)
+        public ItemModel(string name, ItemTypeEnum type)
         {
+            this.Name = name;
             this.Type = type;
         }
 
@@ -44,7 +50,7 @@ namespace MixPlayCreator.Base.Model.Items
                 switch (this.Type)
                 {
                     case ItemTypeEnum.Text: return "/Assets/Text.png";
-                    case ItemTypeEnum.Picture: return "/Assets/Image.png";
+                    case ItemTypeEnum.Image: return "/Assets/Image.png";
                 }
                 return null;
             }

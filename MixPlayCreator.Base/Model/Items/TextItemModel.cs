@@ -17,10 +17,10 @@ namespace MixPlayCreator.Base.Model.Items
         [DataMember]
         public string Font { get; set; }
 
-        public TextItemModel() : this("Text", 24, "Black", "Arial") { }
+        public TextItemModel() : this("Text", "Text", 24, "Black", "Arial") { }
 
-        public TextItemModel(string text, int size, string color, string font)
-            : base(ItemTypeEnum.Text)
+        public TextItemModel(string name, string text, int size, string color, string font)
+            : base(name, ItemTypeEnum.Text)
         {
             this.Text = text;
             this.Size = size;

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace MixPlayCreator.Base.Model
 {
@@ -8,9 +9,16 @@ namespace MixPlayCreator.Base.Model
         [DataMember]
         public string DirectoryPath { get; set; }
 
-        public CDKProjectModel() { }
+        [DataMember]
+        public List<SceneModel> Scenes { get; set; }
+
+        public CDKProjectModel()
+        {
+            this.Scenes = new List<SceneModel>();
+        }
 
         public CDKProjectModel(string directoryPath)
+            : this()
         {
             this.DirectoryPath = directoryPath;
         }

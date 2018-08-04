@@ -16,35 +16,86 @@
 
         Title="MixPlay Creator" Width="1024" Height="768">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <MaterialDesign:DialogHost x:Name="MDDialogHost" Identifier="RootDialog" />
 
-        <Border Grid.Column="0" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
-            <Grid Background="{DynamicResource MaterialDesignPaper}">
-                <Controls:ItemsCanvasControl x:Name="ItemsCanvas" />
-            </Grid>
-        </Border>
-
-        <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}">
+        <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-                    <StackPanel>
-                        <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">Item Types:</TextBlock>
-                        <StackPanel x:Name="ItemsTypeStackPanel" Margin="0,10" />
-                    </StackPanel>
-                </ScrollViewer>
-            </Border>
+            <Grid Grid.Row="0" Margin="5,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
-                <ContentControl x:Name="ItemEditorContentControl" Margin="15" />
-            </Border>
+                <Button x:Name="NewProjectButton" Grid.Column="0" Click="NewProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="New Project">
+                    <Image Source="/Assets/NewProject.png" />
+                </Button>
+
+                <Button x:Name="OpenProjectButton" Grid.Column="2" Click="OpenProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Load Project">
+                    <Image Source="/Assets/OpenProject.png" />
+                </Button>
+
+                <Button x:Name="SaveProjectButton" Grid.Column="4" Click="SaveProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Save Project">
+                    <Image Source="/Assets/SaveProject.png" />
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
+                    <Grid Background="{DynamicResource MaterialDesignPaper}">
+                        <Controls:ItemsCanvasControl x:Name="ItemsCanvas" />
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">Add Item:</TextBlock>
+                                <StackPanel x:Name="ItemsTypeStackPanel" Margin="0,10" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Border Grid.Row="1" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">All Items:</TextBlock>
+                                <StackPanel x:Name="AllItemsStackPanel" Margin="0,10" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Border Grid.Row="2" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">Item Details:</TextBlock>
+                                <ContentControl x:Name="ItemEditorContentControl" Margin="15" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+                </Grid>
+            </Grid>
+
+            <ProgressBar x:Name="StatusBar" Grid.Row="2" IsIndeterminate="True" Visibility="Hidden" />
         </Grid>
     </Grid>
 </Window>

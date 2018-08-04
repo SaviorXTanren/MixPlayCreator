@@ -1,5 +1,4 @@
 ﻿using MixPlayCreator.Base.ViewModel.Items;
-using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,7 +22,9 @@ namespace MixPlayerCreator.WPF.Controls.Items
 
             this.Loaded += ItemControlBase_Loaded;
             this.MouseMove += ItemControlBase_MouseMove;
+
             ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
+            ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
         }
 
         protected virtual Task OnLoaded() { return Task.FromResult(0); }
@@ -76,9 +77,17 @@ namespace MixPlayerCreator.WPF.Controls.Items
             await this.OnLoaded();
         }
 
-        private void ItemControlBase_ItemSelectionChanged(object sender, ItemViewModel e)
+        private void ItemControlBase_ItemSelectionChanged(object sender, ItemViewModel item)
         {
             this.Item.IsSelected = false;
+        }
+
+        private void ItemViewModel_ItemDeletionOccurred(object sender, ItemViewModel item)
+        {
+            if (item != null && this.Item.Equals(item))
+            {
+                this.ItemCanvas.RemoveSelectedItem(this);
+            }
         }
     }
 }

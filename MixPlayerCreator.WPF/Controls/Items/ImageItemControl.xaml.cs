@@ -3,13 +3,13 @@
 namespace MixPlayerCreator.WPF.Controls.Items
 {
     /// <summary>
-    /// Interaction logic for PictureItemControl.xaml
+    /// Interaction logic for ImageItemControl.xaml
     /// </summary>
-    public partial class PictureItemControl : ItemControlBase
+    public partial class ImageItemControl : ItemControlBase
     {
-        private PictureItemViewModel item;
+        private ImageItemViewModel item;
 
-        public PictureItemControl(PictureItemViewModel item)
+        public ImageItemControl(ImageItemViewModel item)
             : base(item)
         {
             this.item = item;

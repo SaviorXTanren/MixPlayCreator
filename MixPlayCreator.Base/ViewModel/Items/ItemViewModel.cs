@@ -8,10 +8,26 @@ namespace MixPlayCreator.Base.ViewModel.Items
     public class ItemViewModel : INotifyPropertyChanged
     {
         public static event EventHandler<ItemViewModel> ItemSelectionChanged = delegate { };
+        public static event EventHandler<ItemViewModel> ItemDeletionOccurred = delegate { };
 
         public static void ItemSelected(ItemViewModel item) { ItemViewModel.ItemSelectionChanged(null, item); }
+        public static void ItemDeleted(ItemViewModel item)
+        {
+            ItemViewModel.ItemDeletionOccurred(null, item);
+            ItemViewModel.ItemSelectionChanged(null, null);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public string Name
+        {
+            get { return this.Model.Name; }
+            set
+            {
+                this.Model.Name = value;
+                this.NotifyPropertyChanged("Name");
+            }
+        }
 
         public ItemTypeEnum Type
         {
@@ -51,6 +67,26 @@ namespace MixPlayCreator.Base.ViewModel.Items
             {
                 this.Model.Interactive = value;
                 this.NotifyPropertyChanged("Interactive");
+            }
+        }
+
+        public int SparkCost
+        {
+            get
+            {
+                if (this.Model.Interactive != null && this.Model.Interactive is InteractiveButtonModel)
+                {
+                    return ((InteractiveButtonModel)this.Model.Interactive).SparkCost;
+                }
+                return 0;
+            }
+            set
+            {
+                if (this.Model.Interactive != null && this.Model.Interactive is InteractiveButtonModel)
+                {
+                    ((InteractiveButtonModel)this.Model.Interactive).SparkCost = value;
+                }
+                this.NotifyPropertyChanged("SparkCost");
             }
         }
 

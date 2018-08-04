@@ -1,4 +1,7 @@
-﻿namespace MixPlayCreator.Base.Model.Interactive
+﻿using Mixer.Base.Model.Interactive;
+using Newtonsoft.Json.Linq;
+
+namespace MixPlayCreator.Base.Model.Interactive
 {
     public enum InteractiveTypeEnum
     {
@@ -20,5 +23,7 @@
             this.ID = id;
             this.Type = type;
         }
+
+        public abstract JObject GetInteractiveJObject();
     }
 }

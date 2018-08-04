@@ -67,7 +67,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\Editors\PictureItemEditorControl.xaml">
+    <Page Include="Controls\Editors\GeneralItemEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Editors\ImageItemEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -83,11 +87,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Items\PictureItemControl.xaml">
+    <Page Include="Controls\Items\ImageItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Items\TextItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageDialogControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -99,8 +107,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\Editors\PictureItemEditorControl.xaml.cs">
-      <DependentUpon>PictureItemEditorControl.xaml</DependentUpon>
+    <Compile Include="Controls\Editors\GeneralItemEditorControl.xaml.cs">
+      <DependentUpon>GeneralItemEditorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Editors\ImageItemEditorControl.xaml.cs">
+      <DependentUpon>ImageItemEditorControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Editors\TextItemEditorControl.xaml.cs">
       <DependentUpon>TextItemEditorControl.xaml</DependentUpon>
@@ -112,11 +123,14 @@
     <Compile Include="Controls\Items\ItemTypeControl.xaml.cs">
       <DependentUpon>ItemTypeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Items\PictureItemControl.xaml.cs">
-      <DependentUpon>PictureItemControl.xaml</DependentUpon>
+    <Compile Include="Controls\Items\ImageItemControl.xaml.cs">
+      <DependentUpon>ImageItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Items\TextItemControl.xaml.cs">
       <DependentUpon>TextItemControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageDialogControl.xaml.cs">
+      <DependentUpon>MessageDialogControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -172,6 +186,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\NewProject.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\SaveProject.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\OpenProject.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
