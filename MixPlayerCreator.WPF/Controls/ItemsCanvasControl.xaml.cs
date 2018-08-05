@@ -26,6 +26,11 @@ namespace MixPlayerCreator.WPF.Controls
             Canvas.SetTop(item, y);
         }
 
+        public void SetItemZIndex(ItemControlBase item)
+        {
+            Canvas.SetZIndex(item, item.Item.ZIndex);
+        }
+
         public void RemoveSelectedItem(FrameworkElement item)
         {
             this.CanvasRender.Children.Remove(item);
@@ -76,11 +81,13 @@ namespace MixPlayerCreator.WPF.Controls
         private void Item_Loaded(object sender, RoutedEventArgs e)
         {
             ItemControlBase item = (ItemControlBase)sender;
+
             this.SetItemCoordinates(item, (int)Canvas.GetLeft(item) - (int)(item.ActualWidth / 2), (int)Canvas.GetTop(item) - (int)(item.ActualHeight / 2));
-            Canvas.SetZIndex(item, item.Item.ZIndex);
+
+            item.Item.ZIndex = App.CurrentScene.Items.Count;
+            this.SetItemZIndex(item);
 
             ItemViewModel.ItemAdded(item.Item);
-            item.Item.IsSelected = true;
         }
     }
 }

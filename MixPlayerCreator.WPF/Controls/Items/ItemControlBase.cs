@@ -25,6 +25,7 @@ namespace MixPlayerCreator.WPF.Controls.Items
 
             ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
             ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
+            ItemViewModel.ItemZIndexChangeOccurred += ItemViewModel_ItemZIndexChangeOccurred;
         }
 
         protected virtual Task OnLoaded() { return Task.FromResult(0); }
@@ -87,6 +88,14 @@ namespace MixPlayerCreator.WPF.Controls.Items
             if (item != null && this.Item.Equals(item))
             {
                 this.ItemCanvas.RemoveSelectedItem(this);
+            }
+        }
+
+        private void ItemViewModel_ItemZIndexChangeOccurred(object sender, ItemViewModel item)
+        {
+            if (item != null && this.Item.Equals(item))
+            {
+                this.ItemCanvas.SetItemZIndex(this);
             }
         }
     }

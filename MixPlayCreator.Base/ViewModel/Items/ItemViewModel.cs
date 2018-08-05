@@ -10,6 +10,7 @@ namespace MixPlayCreator.Base.ViewModel.Items
         public static event EventHandler<ItemViewModel> ItemAdditionOccurred = delegate { };
         public static event EventHandler<ItemViewModel> ItemSelectionChanged = delegate { };
         public static event EventHandler<ItemViewModel> ItemDeletionOccurred = delegate { };
+        public static event EventHandler<ItemViewModel> ItemZIndexChangeOccurred = delegate { };
 
         public static void ItemAdded(ItemViewModel item)
         {
@@ -22,6 +23,7 @@ namespace MixPlayCreator.Base.ViewModel.Items
             ItemViewModel.ItemDeletionOccurred(null, item);
             ItemViewModel.ItemSelectionChanged(null, null);
         }
+        public static void ItemZIndexChanged(ItemViewModel item) { ItemViewModel.ItemZIndexChangeOccurred(null, item); }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -69,6 +71,7 @@ namespace MixPlayCreator.Base.ViewModel.Items
             {
                 this.Model.ZIndex = value;
                 this.NotifyPropertyChanged("ZIndex");
+                ItemViewModel.ItemZIndexChanged(this);
             }
         }
 

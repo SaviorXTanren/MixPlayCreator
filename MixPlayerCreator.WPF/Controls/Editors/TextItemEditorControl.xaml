@@ -16,24 +16,18 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="20" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <local:GeneralItemEditorControl Grid.Row="0" x:Name="GeneralItemEditor" />
 
         <TextBox Grid.Row="2" x:Name="TextTextBox" MaterialDesign:HintAssist.Hint="Text" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" />
 
-        <Grid Grid.Row="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="10" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <ComboBox Grid.Row="4" x:Name="SizeComboBox" IsEditable="True" MaterialDesign:HintAssist.Hint="Size" Style="{StaticResource MaterialDesignFloatingHintComboBox}" Text="{Binding Size}" />
 
-            <ComboBox Grid.Column="0" x:Name="SizeComboBox" IsEditable="True" MaterialDesign:HintAssist.Hint="Size" Style="{StaticResource MaterialDesignFloatingHintComboBox}" Text="{Binding Size}" />
+        <ComboBox Grid.Row="6" x:Name="ColorComboBox" IsEditable="True" MaterialDesign:HintAssist.Hint="Color" Style="{StaticResource MaterialDesignFloatingHintComboBox}" Text="{Binding Color}" />
 
-            <ComboBox Grid.Column="2" x:Name="ColorComboBox" IsEditable="True" MaterialDesign:HintAssist.Hint="Color" Style="{StaticResource MaterialDesignFloatingHintComboBox}" Text="{Binding Color}" />
-        </Grid>
-
-        <ComboBox Grid.Row="6" x:Name="FontComboBox" IsEditable="True" MaterialDesign:HintAssist.Hint="Font" Style="{StaticResource MaterialDesignFloatingHintComboBox}" Text="{Binding Font}" />
+        <ComboBox Grid.Row="8" x:Name="FontComboBox" IsEditable="True" MaterialDesign:HintAssist.Hint="Font" Style="{StaticResource MaterialDesignFloatingHintComboBox}" Text="{Binding Font}" />
     </Grid>
 </UserControl>
