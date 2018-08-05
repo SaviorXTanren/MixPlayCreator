@@ -79,7 +79,7 @@ namespace MixPlayerCreator.WPF.Controls.Items
 
         private void ItemControlBase_ItemSelectionChanged(object sender, ItemViewModel item)
         {
-            this.Item.IsSelected = false;
+            this.Item.IsSelected = (this.Item.Equals(item));
         }
 
         private void ItemViewModel_ItemDeletionOccurred(object sender, ItemViewModel item)

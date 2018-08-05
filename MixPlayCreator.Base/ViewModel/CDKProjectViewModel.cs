@@ -10,6 +10,8 @@ namespace MixPlayCreator.Base.ViewModel
 {
     public class CDKProjectViewModel
     {
+        public static string ApplicationDirectory { get { return Path.GetDirectoryName(typeof(CDKProjectViewModel).Assembly.Location); } }
+
         public CDKProjectModel Model { get; set; }
 
         public CDKProjectViewModel(string directoryPath)
@@ -35,14 +37,13 @@ namespace MixPlayCreator.Base.ViewModel
 
         public string ScriptJSFilePath { get { return string.Format("{0}\\src\\script.js", this.Model.DirectoryPath); } }
 
+
         public string LinkedInteractiveGameJSONFilePath { get { return string.Format("{0}\\.cdk\\linkedInteractiveGame.json", this.Model.DirectoryPath); } }
 
         public string WorldSchemaFilePath { get { return string.Format("{0}\\.cdk\\worldSchema.json", this.Model.DirectoryPath); } }
 
 
-        public string ApplicationDirectory { get { return Path.GetDirectoryName(typeof(CDKProjectViewModel).Assembly.Location); } }
-
-        public string SettingsDirectory { get { return Path.Combine(this.ApplicationDirectory, "Settings"); } }
+        public string SettingsDirectory { get { return Path.Combine(ApplicationDirectory, "Settings"); } }
 
 
         public async Task Save()

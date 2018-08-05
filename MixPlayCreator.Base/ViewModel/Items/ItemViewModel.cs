@@ -7,9 +7,15 @@ namespace MixPlayCreator.Base.ViewModel.Items
 {
     public class ItemViewModel : INotifyPropertyChanged
     {
+        public static event EventHandler<ItemViewModel> ItemAdditionOccurred = delegate { };
         public static event EventHandler<ItemViewModel> ItemSelectionChanged = delegate { };
         public static event EventHandler<ItemViewModel> ItemDeletionOccurred = delegate { };
 
+        public static void ItemAdded(ItemViewModel item)
+        {
+            ItemViewModel.ItemAdditionOccurred(null, item);
+            ItemViewModel.ItemSelectionChanged(null, item);
+        }
         public static void ItemSelected(ItemViewModel item) { ItemViewModel.ItemSelectionChanged(null, item); }
         public static void ItemDeleted(ItemViewModel item)
         {
@@ -36,8 +42,14 @@ namespace MixPlayCreator.Base.ViewModel.Items
             {
                 this.Model.Type = value;
                 this.NotifyPropertyChanged("Type");
+                this.NotifyPropertyChanged("TypeString");
+                this.NotifyPropertyChanged("TypeImageSourcePath");
             }
         }
+
+        public string TypeString { get { return this.Model.TypeString; } }
+
+        public string TypeImageSourcePath { get { return this.Model.TypeImageSourcePath; } }
 
         public bool IsVisible
         {

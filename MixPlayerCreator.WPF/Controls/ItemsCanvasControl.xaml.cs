@@ -79,7 +79,7 @@ namespace MixPlayerCreator.WPF.Controls
             this.SetItemCoordinates(item, (int)Canvas.GetLeft(item) - (int)(item.ActualWidth / 2), (int)Canvas.GetTop(item) - (int)(item.ActualHeight / 2));
             Canvas.SetZIndex(item, item.Item.ZIndex);
 
-            ItemViewModel.ItemSelected(item.Item);
+            ItemViewModel.ItemAdded(item.Item);
             item.Item.IsSelected = true;
         }
     }

@@ -79,7 +79,23 @@
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
                             <StackPanel>
                                 <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">All Items:</TextBlock>
-                                <StackPanel x:Name="AllItemsStackPanel" Margin="0,10" />
+                                <ListView x:Name="AllItems" Margin="0,10" SelectionChanged="AllItems_SelectionChanged">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="10" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Image Grid.Column="0" Source="{Binding TypeImageSourcePath}" Width="20" Height="20" />
+
+                                                <TextBlock Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Name}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
                             </StackPanel>
                         </ScrollViewer>
                     </Border>

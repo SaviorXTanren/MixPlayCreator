@@ -7,6 +7,7 @@ using MixPlayerCreator.WPF.Controls.Editors;
 using MixPlayerCreator.WPF.Controls.Items;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,9 +21,13 @@ namespace MixPlayerCreator.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ObservableCollection<ItemViewModel> items = new ObservableCollection<ItemViewModel>();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            this.AllItems.ItemsSource = this.items;
 
             this.Loaded += MainWindow_Loaded;
             this.KeyDown += MainWindow_KeyDown;
@@ -52,10 +57,14 @@ namespace MixPlayerCreator.WPF
             this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel("Text", ItemTypeEnum.Text)));
             this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel("Image", ItemTypeEnum.Image)));
 
+            ItemViewModel.ItemAdditionOccurred += ItemViewModel_ItemAdditionOccurred;
             ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
+            ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
 
             App.Project = new CDKProjectViewModel(@"S:\Code\MixPlayCreator\CDKProjectSample");
             App.CurrentScene = App.Project.Scenes.First();
+
+            this.RefreshAllItemsList();
         }
 
         private void NewProjectButton_Click(object sender, RoutedEventArgs e)
@@ -90,23 +99,57 @@ namespace MixPlayerCreator.WPF
             }
         }
 
-        private void ItemControlBase_ItemSelectionChanged(object sender, ItemViewModel e)
+        private void ItemViewModel_ItemAdditionOccurred(object sender, ItemViewModel e)
         {
-            if (e != null)
+            this.RefreshAllItemsList();
+        }
+
+        private void ItemControlBase_ItemSelectionChanged(object sender, ItemViewModel item)
+        {
+            if (item != null)
             {
-                switch (e.Type)
+                switch (item.Type)
                 {
                     case ItemTypeEnum.Text:
-                        this.ItemEditorContentControl.Content = new TextItemEditorControl((TextItemViewModel)e);
+                        this.ItemEditorContentControl.Content = new TextItemEditorControl((TextItemViewModel)item);
                         break;
                     case ItemTypeEnum.Image:
-                        this.ItemEditorContentControl.Content = new ImageItemEditorControl((ImageItemViewModel)e);
+                        this.ItemEditorContentControl.Content = new ImageItemEditorControl((ImageItemViewModel)item);
                         break;
+                }
+                
+                if (this.AllItems.SelectedItem != item)
+                {
+                    this.AllItems.SelectedItem = item;
                 }
             }
             else
             {
                 this.ItemEditorContentControl.Content = null;
+                this.AllItems.SelectedIndex = -1;
+            }
+        }
+
+        private void ItemViewModel_ItemDeletionOccurred(object sender, ItemViewModel e)
+        {
+            this.RefreshAllItemsList();
+        }
+
+        private void AllItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.AllItems.SelectedIndex >= 0)
+            {
+                ItemViewModel item = (ItemViewModel)this.AllItems.SelectedItem;
+                ItemViewModel.ItemSelected(item);
+            }
+        }
+
+        private void RefreshAllItemsList()
+        {
+            this.items.Clear();
+            foreach (ItemViewModel item in App.CurrentScene.Items.OrderBy(i => i.Name))
+            {
+                this.items.Add(item);
             }
         }
 
