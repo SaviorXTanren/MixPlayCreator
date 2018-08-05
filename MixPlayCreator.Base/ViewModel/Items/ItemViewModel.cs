@@ -64,6 +64,26 @@ namespace MixPlayCreator.Base.ViewModel.Items
             }
         }
 
+        public int LeftPosition
+        {
+            get { return this.Model.LeftPosition; }
+            set
+            {
+                this.Model.LeftPosition = value;
+                this.NotifyPropertyChanged("LeftPosition");
+            }
+        }
+
+        public int TopPosition
+        {
+            get { return this.Model.TopPosition; }
+            set
+            {
+                this.Model.TopPosition = value;
+                this.NotifyPropertyChanged("TopPosition");
+            }
+        }
+
         public int ZIndex
         {
             get { return this.Model.ZIndex; }
@@ -132,5 +152,11 @@ namespace MixPlayCreator.Base.ViewModel.Items
         public string SelectedBorderBrush { get { return (this.IsSelected) ? "DarkBlue" : "Transparent"; } }
 
         public double VisibleOpacity { get { return (this.IsVisible) ? 1.0 : 0.25; } }
+
+        public int GetCanvasLeftPosition(int canvasWidth) { return (int)((0.01 * (double)this.LeftPosition) * (double)canvasWidth); }
+        public int GetCanvasTopPosition(int canvasHeight) { return (int)((0.01 * (double)this.TopPosition) * (double)canvasHeight); }
+
+        public void SetCanvasLeftPosition(int x, int canvasWidth) { this.LeftPosition = (int)(((double)x / (double)canvasWidth) * 100.0); }
+        public void SetCanvasTopPosition(int y, int canvasHeight) { this.TopPosition = (int)(((double)y / (double)canvasHeight) * 100.0); }
     }
 }

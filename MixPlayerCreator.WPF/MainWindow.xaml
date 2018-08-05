@@ -47,6 +47,26 @@
                 </Button>
             </Grid>
 
+            <Grid Grid.Row="0" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="AddSceneButton" Grid.Column="0" Click="AddSceneButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Add Scene">
+                    <Image Source="/Assets/AddScene.png" />
+                </Button>
+
+                <ComboBox x:Name="CurrentSceneComboBox" Grid.Column="2" Width="200" MaterialDesign:HintAssist.Hint="Current Scene" Style="{StaticResource MaterialDesignFloatingHintComboBox}" DisplayMemberPath="Name" SelectionChanged="CurrentSceneComboBox_SelectionChanged" />
+
+                <Button x:Name="DeleteSceneButton" Grid.Column="4" Click="DeleteSceneButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Delete Scene">
+                    <Image Source="/Assets/DeleteScene.png" />
+                </Button>
+            </Grid>
+
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
@@ -69,7 +89,7 @@
                     <Border Grid.Row="0" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
                             <StackPanel>
-                                <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">Add Item:</TextBlock>
+                                <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">Add Item (Drag &amp; Drop):</TextBlock>
                                 <StackPanel x:Name="ItemsTypeStackPanel" Margin="0,10" />
                             </StackPanel>
                         </ScrollViewer>

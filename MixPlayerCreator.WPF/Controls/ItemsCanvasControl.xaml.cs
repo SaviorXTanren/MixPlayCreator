@@ -2,6 +2,7 @@
 using MixPlayCreator.Base.Util;
 using MixPlayCreator.Base.ViewModel.Items;
 using MixPlayerCreator.WPF.Controls.Items;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,6 +19,18 @@ namespace MixPlayerCreator.WPF.Controls
             InitializeComponent();
         }
 
+        public Tuple<int, int> GetCanvasSize() { return new Tuple<int, int>((int)this.CanvasRender.ActualWidth, (int)this.CanvasRender.ActualHeight); }
+
+        public void RefreshChildren()
+        {
+            this.CanvasRender.Children.Clear();
+            Tuple<int, int> canvasSize = this.GetCanvasSize();
+            foreach (ItemViewModel item in App.CurrentScene.Items)
+            {
+                this.AddItemToCanvas(item, item.GetCanvasLeftPosition(canvasSize.Item1), item.GetCanvasTopPosition(canvasSize.Item2));
+            }
+        }
+
         public void SetItemCoordinates(FrameworkElement item, int x, int y)
         {
             x = MathHelper.Clamp(x, 0, (int)(this.CanvasRender.ActualWidth - item.ActualWidth));
@@ -25,6 +38,8 @@ namespace MixPlayerCreator.WPF.Controls
             Canvas.SetLeft(item, x);
             Canvas.SetTop(item, y);
         }
+
+        public Tuple<int, int> GetItemCoordinates(FrameworkElement item) { return new Tuple<int, int>((int)Canvas.GetLeft(item), (int)Canvas.GetTop(item)); }
 
         public void SetItemZIndex(ItemControlBase item)
         {
@@ -47,10 +62,10 @@ namespace MixPlayerCreator.WPF.Controls
                 switch (type)
                 {
                     case ItemTypeEnum.Text:
-                        this.AddItemToCanvas(new TextItemControl(new TextItemViewModel()), (int)dropPoint.X, (int)dropPoint.Y);
+                        this.AddNewItemToCanvas(new TextItemViewModel(), (int)dropPoint.X, (int)dropPoint.Y);
                         break;
                     case ItemTypeEnum.Image:
-                        this.AddItemToCanvas(new ImageItemControl(new ImageItemViewModel()), (int)dropPoint.X, (int)dropPoint.Y);
+                        this.AddNewItemToCanvas(new ImageItemViewModel(), (int)dropPoint.X, (int)dropPoint.Y);
                         break;
                 }
                 e.Effects = DragDropEffects.Move;
@@ -67,9 +82,31 @@ namespace MixPlayerCreator.WPF.Controls
             e.Handled = true;
         }
 
-        private void AddItemToCanvas(ItemControlBase item, int x, int y)
+        private void AddNewItemToCanvas(ItemViewModel item, int x, int y)
         {
-            App.CurrentScene.Items.Add(item.Item);
+            App.CurrentScene.Items.Add(item);
+            ItemViewModel.ItemAdded(item);
+
+            item.ZIndex = App.CurrentScene.Items.Count;
+
+            this.AddItemToCanvas(item, x, y);
+        }
+
+        private void AddItemToCanvas(ItemViewModel item, int x, int y)
+        {
+            switch (item.Type)
+            {
+                case ItemTypeEnum.Text:
+                    this.AddItemControlToCanvas(new TextItemControl((TextItemViewModel)item), x, y);
+                    break;
+                case ItemTypeEnum.Image:
+                    this.AddItemControlToCanvas(new ImageItemControl((ImageItemViewModel)item), x, y);
+                    break;
+            }
+        }
+
+        private void AddItemControlToCanvas(ItemControlBase item, int x, int y)
+        {
             item.ItemCanvas = this;
             item.Loaded += Item_Loaded;
 
@@ -84,10 +121,9 @@ namespace MixPlayerCreator.WPF.Controls
 
             this.SetItemCoordinates(item, (int)Canvas.GetLeft(item) - (int)(item.ActualWidth / 2), (int)Canvas.GetTop(item) - (int)(item.ActualHeight / 2));
 
-            item.Item.ZIndex = App.CurrentScene.Items.Count;
+            item.UpdateModelPosition();
+            
             this.SetItemZIndex(item);
-
-            ItemViewModel.ItemAdded(item.Item);
         }
     }
 }

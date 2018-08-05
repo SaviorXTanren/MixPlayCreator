@@ -26,6 +26,12 @@ namespace MixPlayCreator.Base.Model.Items
         public bool IsVisible { get; set; } = true;
 
         [DataMember]
+        public int LeftPosition { get; set; }
+
+        [DataMember]
+        public int TopPosition { get; set; }
+
+        [DataMember]
         public int ZIndex { get; set; }
 
         [DataMember]

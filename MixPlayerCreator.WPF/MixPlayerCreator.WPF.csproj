@@ -68,6 +68,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\Dialogs\BasicTextEntryDialogControl.xaml.cs">
+      <DependentUpon>BasicTextEntryDialogControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Util\DialogHelper.cs" />
+    <Page Include="Controls\Dialogs\BasicTextEntryDialogControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ConfirmationDialogControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Editors\GeneralItemEditorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -96,7 +108,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\MessageDialogControl.xaml">
+    <Page Include="Controls\Dialogs\MessageDialogControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -107,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ConfirmationDialogControl.xaml.cs">
+      <DependentUpon>ConfirmationDialogControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Editors\GeneralItemEditorControl.xaml.cs">
       <DependentUpon>GeneralItemEditorControl.xaml</DependentUpon>
@@ -130,7 +145,7 @@
     <Compile Include="Controls\Items\TextItemControl.xaml.cs">
       <DependentUpon>TextItemControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MessageDialogControl.xaml.cs">
+    <Compile Include="Controls\Dialogs\MessageDialogControl.xaml.cs">
       <DependentUpon>MessageDialogControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
@@ -196,6 +211,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\OpenProject.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\AddScene.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\DeleteScene.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

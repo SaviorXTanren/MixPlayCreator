@@ -1,10 +1,9 @@
-﻿using MaterialDesignThemes.Wpf;
-using MixPlayCreator.Base.Model.Items;
+﻿using MixPlayCreator.Base.Model.Items;
 using MixPlayCreator.Base.ViewModel;
 using MixPlayCreator.Base.ViewModel.Items;
-using MixPlayerCreator.WPF.Controls;
 using MixPlayerCreator.WPF.Controls.Editors;
 using MixPlayerCreator.WPF.Controls.Items;
+using MixPlayerCreator.WPF.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,6 +20,7 @@ namespace MixPlayerCreator.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ObservableCollection<SceneViewModel> scenes = new ObservableCollection<SceneViewModel>();
         private ObservableCollection<ItemViewModel> items = new ObservableCollection<ItemViewModel>();
 
         public MainWindow()
@@ -62,9 +62,13 @@ namespace MixPlayerCreator.WPF
             ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
 
             App.Project = new CDKProjectViewModel(@"S:\Code\MixPlayCreator\CDKProjectSample");
-            App.CurrentScene = App.Project.Scenes.First();
 
-            this.RefreshAllItemsList();
+            this.CurrentSceneComboBox.ItemsSource = this.scenes;
+            foreach (SceneViewModel scene in App.Project.Scenes)
+            {
+                this.scenes.Add(scene);
+            }
+            this.CurrentSceneComboBox.SelectedIndex = 0;
         }
 
         private void NewProjectButton_Click(object sender, RoutedEventArgs e)
@@ -79,29 +83,78 @@ namespace MixPlayerCreator.WPF
 
         private async void SaveProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (App.Project != null)
+            await this.LoadingOperation(async () =>
             {
-                HashSet<string> itemIDs = new HashSet<string>();
-                foreach (SceneViewModel scene in App.Project.Scenes)
+                if (App.Project != null)
                 {
-                    foreach (ItemViewModel item in scene.Items)
+                    HashSet<string> itemIDs = new HashSet<string>();
+                    foreach (SceneViewModel scene in App.Project.Scenes)
                     {
-                        if (itemIDs.Contains(item.Name))
+                        foreach (ItemViewModel item in scene.Items)
                         {
-                            await this.ShowMessageDialog(string.Format("There already exists an item called {0}. Please rename it to something unique.", item.Name));
-                            return;
+                            if (itemIDs.Contains(item.Name))
+                            {
+                                await DialogHelper.ShowMessageDialog(string.Format("There already exists an item called {0}. Please rename it to something unique.", item.Name));
+                                return;
+                            }
+                            itemIDs.Add(item.Name);
                         }
-                        itemIDs.Add(item.Name);
+                    }
+
+                    await App.Project.Save();
+                }
+            });
+        }
+
+        private async void AddSceneButton_Click(object sender, RoutedEventArgs e)
+        {
+            await this.LoadingOperation(async () =>
+            {
+                object result = await DialogHelper.ShowBasicTextEntryDialog("Scene Name");
+                if (result != null && !string.IsNullOrEmpty(result.ToString()))
+                {
+                    SceneViewModel newScene = new SceneViewModel(result.ToString());
+                    App.Project.Scenes.Add(newScene);
+                    this.RefreshSceneList();
+                    this.CurrentSceneComboBox.SelectedItem = newScene;
+                }
+            });
+        }
+
+        private void CurrentSceneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.CurrentSceneComboBox.SelectedIndex >= 0)
+            {
+                App.CurrentScene = (SceneViewModel)this.CurrentSceneComboBox.SelectedItem;
+                this.RefreshItemsList();
+                this.ItemsCanvas.RefreshChildren();
+            }
+        }
+
+        private async void DeleteSceneButton_Click(object sender, RoutedEventArgs e)
+        {
+            await this.LoadingOperation(async () =>
+            {
+                if (App.Project.Scenes.Count >= 2)
+                {
+                    object result = await DialogHelper.ShowConfirmationDialog("Are you sure you wish to delete this scene?");
+                    if (result != null && result.ToString().Equals("True"))
+                    {
+                        App.Project.Scenes.Remove(App.CurrentScene);
+                        this.RefreshSceneList();
+                        this.CurrentSceneComboBox.SelectedIndex = 0;
                     }
                 }
-
-                await App.Project.Save();
-            }
+                else
+                {
+                    await DialogHelper.ShowMessageDialog("You must have at least 1 scene");
+                }
+            });
         }
 
         private void ItemViewModel_ItemAdditionOccurred(object sender, ItemViewModel e)
         {
-            this.RefreshAllItemsList();
+            this.RefreshItemsList();
         }
 
         private void ItemControlBase_ItemSelectionChanged(object sender, ItemViewModel item)
@@ -132,7 +185,7 @@ namespace MixPlayerCreator.WPF
 
         private void ItemViewModel_ItemDeletionOccurred(object sender, ItemViewModel e)
         {
-            this.RefreshAllItemsList();
+            this.RefreshItemsList();
         }
 
         private void AllItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -144,7 +197,16 @@ namespace MixPlayerCreator.WPF
             }
         }
 
-        private void RefreshAllItemsList()
+        private void RefreshSceneList()
+        {
+            this.scenes.Clear();
+            foreach (SceneViewModel scene in App.Project.Scenes.OrderBy(i => i.Name))
+            {
+                this.scenes.Add(scene);
+            }
+        }
+
+        private void RefreshItemsList()
         {
             this.items.Clear();
             foreach (ItemViewModel item in App.CurrentScene.Items.OrderBy(i => i.Name))
@@ -162,39 +224,6 @@ namespace MixPlayerCreator.WPF
 
             this.IsEnabled = true;
             this.StatusBar.Visibility = Visibility.Collapsed;
-        }
-
-        private async Task ShowMessageDialog(string message)
-        {
-            await this.ShowDialog(new MessageDialogControl(message));
-        }
-
-        private async Task ShowDialog(UserControl control)
-        {
-            IEnumerable<Window> windows = Application.Current.Windows.OfType<Window>();
-            if (windows.Count() > 0)
-            {
-                object obj = windows.FirstOrDefault().FindName("MDDialogHost");
-                if (obj != null)
-                {
-                    DialogHost dialogHost = (DialogHost)obj;
-                    await dialogHost.ShowDialog(control);
-                }
-            }
-        }
-
-        private void HideDialog()
-        {
-            IEnumerable<Window> windows = Application.Current.Windows.OfType<Window>();
-            if (windows.Count() > 0)
-            {
-                object obj = windows.FirstOrDefault().FindName("MDDialogHost");
-                if (obj != null)
-                {
-                    DialogHost dialogHost = (DialogHost)obj;
-                    dialogHost.IsOpen = false;
-                }
-            }
         }
     }
 }

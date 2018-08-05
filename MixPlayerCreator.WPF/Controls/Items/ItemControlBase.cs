@@ -1,4 +1,5 @@
 ﻿using MixPlayCreator.Base.ViewModel.Items;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,6 +29,14 @@ namespace MixPlayerCreator.WPF.Controls.Items
             ItemViewModel.ItemZIndexChangeOccurred += ItemViewModel_ItemZIndexChangeOccurred;
         }
 
+        public void UpdateModelPosition()
+        {
+            Tuple<int, int> position = this.ItemCanvas.GetItemCoordinates(this);
+            Tuple<int, int> canvasSize = this.ItemCanvas.GetCanvasSize();
+            this.Item.SetCanvasLeftPosition(position.Item1, canvasSize.Item1);
+            this.Item.SetCanvasTopPosition(position.Item2, canvasSize.Item2);
+        }
+
         protected virtual Task OnLoaded() { return Task.FromResult(0); }
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
@@ -42,6 +51,15 @@ namespace MixPlayerCreator.WPF.Controls.Items
             this.CaptureMouse();
 
             e.Handled = true;
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonUp(e);
+
+            this.IsItemHeld = false;
+            this.lastMousePosition = new Point();
+            this.ReleaseMouseCapture();
         }
 
         private void ItemControlBase_MouseMove(object sender, MouseEventArgs e)
@@ -60,17 +78,10 @@ namespace MixPlayerCreator.WPF.Controls.Items
 
                 this.ItemCanvas.SetItemCoordinates(this, (int)Canvas.GetLeft(this) + xDiff, (int)Canvas.GetTop(this) + yDiff);
 
+                this.UpdateModelPosition();
+
                 this.lastMousePosition = currentPosition;
             }
-        }
-
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            base.OnMouseLeftButtonUp(e);
-
-            this.IsItemHeld = false;
-            this.lastMousePosition = new Point();
-            this.ReleaseMouseCapture();
         }
 
         private async void ItemControlBase_Loaded(object sender, System.Windows.RoutedEventArgs e)
