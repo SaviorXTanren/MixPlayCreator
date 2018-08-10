@@ -142,12 +142,12 @@ namespace MixPlayCreator.Base.ViewModel
                     if (item is TextItemViewModel)
                     {
                         TextItemViewModel textItem = (TextItemViewModel)item;
-                        definedItems.AppendFormat("addText(\"{0}\", {1}, \"{2}\", \"{3}\", {4}, {5}, -1, '', '', '');", textItem.Text, textItem.Size, textItem.Color.ToLower(), textItem.Font, textItem.LeftPosition, textItem.TopPosition);
+                        definedItems.AppendFormat("addText(\"{0}\", \"{1}\", {2}, \"{3}\", \"{4}\", {5}, {6}, -1, '', '', '', {7});", textItem.Name, textItem.Text, textItem.Size, textItem.Color.ToLower(), textItem.Font, textItem.LeftPosition, textItem.TopPosition, textItem.IsVisible.ToString().ToLower());
                     }
                     else if (item is ImageItemViewModel)
                     {
                         ImageItemViewModel imageItem = (ImageItemViewModel)item;
-                        definedItems.AppendFormat("addImage(\"{0}\", {1}, {2}, {3}, {4}, -1, '', '', '');", Path.GetFileName(imageItem.SourcePath), imageItem.Width, imageItem.Height, imageItem.LeftPosition, imageItem.TopPosition);
+                        definedItems.AppendFormat("addImage(\"{0}\", \"{1}\", {2}, {3}, {4}, {5}, -1, '', '', '', {6});", imageItem.Name, Path.GetFileName(imageItem.SourcePath), imageItem.Width, imageItem.Height, imageItem.LeftPosition, imageItem.TopPosition, imageItem.IsVisible.ToString().ToLower());
                         if (File.Exists(imageItem.SourcePath))
                         {
                             File.Copy(imageItem.SourcePath, Path.Combine(this.SourceFolderPath, Path.GetFileName(imageItem.SourcePath)), overwrite: true);

@@ -32,25 +32,29 @@ $.fn.extend({
 	},
 });
 
-function addImage(link, width, height, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim) {
+function addImage(id, link, width, height, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim, visible) {
 	var newElement = document.createElement('img');
     newElement.src = link;
     newElement.style.cssText += 'width: ' + width + 'px; height: ' + height + 'px; ';
 
-    addElement(newElement, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim);
+    addElement(newElement, id, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim, visible);
 }
 
-function addText(text, size, color, font, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim) {
+function addText(id, text, size, color, font, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim, visible) {
     var newElement = document.createElement('h1');
     newElement.innerHTML = text;
     newElement.style.cssText += 'font-size: ' + size + 'px; color: ' + color + '; ' + 'text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; white-space: nowrap;';
 
-    addElement(newElement, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim);
+    addElement(newElement, id, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim, visible);
 }
 
-function addElement(newElement, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim) {
+function addElement(newElement, id, horizontal, vertical, duration, entranceAnim, visibleAnim, exitAnim, visible) {
     if (newElement != null) {
+        newElement.id = id;
         newElement.style.cssText += 'position: absolute; left: ' + horizontal.toString() + '%; top: ' + vertical.toString() + '%; transform: translate(-50%, -50%);'
+        if (!visible) {
+            newElement.style.cssText += 'visibility: hidden;'
+        }
 
 		var divContainer = document.createElement('div');
         divContainer.style.cssText += 'position: absolute; left: 5%; top: 5%; width: 90%; height: 90%; max-width: 90%; max-height: 90%; min-width: 90%; min-height: 90%;';
