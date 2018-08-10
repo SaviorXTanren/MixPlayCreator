@@ -26,6 +26,9 @@ namespace MixPlayCreator.Base.ViewModel
                     case ItemTypeEnum.Image:
                         this.Items.Add(new ImageItemViewModel((ImageItemModel)item));
                         break;
+                    case ItemTypeEnum.Sound:
+                        this.Items.Add(new SoundItemViewModel((SoundItemModel)item));
+                        break;
                 }
             }
         }

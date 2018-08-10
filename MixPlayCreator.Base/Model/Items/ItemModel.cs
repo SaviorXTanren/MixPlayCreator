@@ -9,8 +9,7 @@ namespace MixPlayCreator.Base.Model.Items
     {
         Text = 0,
         Image = 1,
-        Shape = 2,
-        Video = 3
+        Sound = 2,
     }
 
     [DataContract]
@@ -55,8 +54,9 @@ namespace MixPlayCreator.Base.Model.Items
             {
                 switch (this.Type)
                 {
-                    case ItemTypeEnum.Text: return "/Assets/Text.png";
-                    case ItemTypeEnum.Image: return "/Assets/Image.png";
+                    case ItemTypeEnum.Text: return "/Assets/TextItem.png";
+                    case ItemTypeEnum.Image: return "/Assets/ImageItem.png";
+                    case ItemTypeEnum.Sound: return "/Assets/SoundItem.png";
                 }
                 return null;
             }
