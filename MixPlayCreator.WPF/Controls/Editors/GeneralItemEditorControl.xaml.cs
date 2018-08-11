@@ -21,6 +21,7 @@ namespace MixPlayCreator.WPF.Controls.Editors
             this.item = item;
             this.DataContext = this.item;
             this.VisibleCheckBox.IsChecked = this.item.IsVisible;
+            this.InteractiveButtonCheckBox.IsChecked = this.item.IsInteractive;
         }
 
         private void VisibleCheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
@@ -40,11 +41,6 @@ namespace MixPlayCreator.WPF.Controls.Editors
                 this.item.Interactive = null;
                 this.SparkCostTextBox.IsEnabled = false;
             }
-        }
-
-        private void SparkCostTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

@@ -142,12 +142,12 @@ namespace MixPlayCreator.Base.ViewModel
                     if (item is TextItemViewModel)
                     {
                         TextItemViewModel textItem = (TextItemViewModel)item;
-                        definedItems.AppendFormat("addText(\"{0}\", \"{1}\", {2}, \"{3}\", \"{4}\", {5}, {6}, -1, '', '', '', {7});", textItem.Name, textItem.Text, textItem.Size, textItem.Color.ToLower(), textItem.Font, textItem.LeftPosition, textItem.TopPosition, textItem.IsVisible.ToString().ToLower());
+                        definedItems.AppendFormat("addText(\"{0}\", \"{1}\", {2}, \"{3}\", \"{4}\", {5}, {6}, {7}, {8});", textItem.Name, textItem.Text, textItem.Size, textItem.Color.ToLower(), textItem.Font, textItem.LeftPosition, textItem.TopPosition, textItem.IsVisible.ToString().ToLower(), textItem.IsInteractive.ToString().ToLower());
                     }
                     else if (item is ImageItemViewModel)
                     {
                         ImageItemViewModel imageItem = (ImageItemViewModel)item;
-                        definedItems.AppendFormat("addImage(\"{0}\", \"{1}\", {2}, {3}, {4}, {5}, -1, '', '', '', {6});", imageItem.Name, Path.GetFileName(imageItem.SourcePath), imageItem.Width, imageItem.Height, imageItem.LeftPosition, imageItem.TopPosition, imageItem.IsVisible.ToString().ToLower());
+                        definedItems.AppendFormat("addImage(\"{0}\", \"{1}\", {2}, {3}, {4}, {5}, {6}, {7});", imageItem.Name, Path.GetFileName(imageItem.SourcePath), imageItem.Width, imageItem.Height, imageItem.LeftPosition, imageItem.TopPosition, imageItem.IsVisible.ToString().ToLower(), imageItem.IsInteractive.ToString().ToLower());
                         if (File.Exists(imageItem.SourcePath))
                         {
                             File.Copy(imageItem.SourcePath, Path.Combine(this.SourceFolderPath, Path.GetFileName(imageItem.SourcePath)), overwrite: true);
@@ -162,6 +162,7 @@ namespace MixPlayCreator.Base.ViewModel
                             File.Copy(soundItem.SourcePath, Path.Combine(this.SourceFolderPath, Path.GetFileName(soundItem.SourcePath)), overwrite: true);
                         }
                     }
+
                     definedItems.AppendLine();
                 }
             }

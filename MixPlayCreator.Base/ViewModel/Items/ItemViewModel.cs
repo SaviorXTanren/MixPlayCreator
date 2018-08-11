@@ -105,6 +105,8 @@ namespace MixPlayCreator.Base.ViewModel.Items
             }
         }
 
+        public bool IsInteractive { get { return (this.Model.Interactive != null && this.Model.Interactive is InteractiveButtonModel); } }
+
         public int SparkCost
         {
             get
