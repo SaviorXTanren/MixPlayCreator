@@ -32,23 +32,23 @@ $.fn.extend({
 	},
 });
 
-function addImage(id, link, width, height, horizontal, vertical, visible, makeButton) {
+function addImage(id, scene, link, width, height, horizontal, vertical, visible, makeButton) {
     var newElement = document.createElement('img');
     newElement.src = link;
     newElement.style.cssText += 'width: ' + width + 'px; height: ' + height + 'px; ';
 
-    addElement(newElement, id, horizontal, vertical, visible, makeButton);
+    addElement(newElement, id, scene, horizontal, vertical, visible, makeButton);
 }
 
-function addText(id, text, size, color, font, horizontal, vertical, visible, makeButton) {
+function addText(id, scene, text, size, color, font, horizontal, vertical, visible, makeButton) {
     var newElement = document.createElement('h1');
     newElement.innerHTML = text;
     newElement.style.cssText += 'font-size: ' + size + 'px; color: ' + color + '; ' + 'text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; white-space: nowrap;';
 
-    addElement(newElement, id, horizontal, vertical, visible, makeButton);
+    addElement(newElement, id, scene, horizontal, vertical, visible, makeButton);
 }
 
-function addElement(newElement, id, horizontal, vertical, visible, makeButton) {
+function addElement(newElement, id, scene, horizontal, vertical, visible, makeButton) {
     if (newElement != null) {
         newElement.id = id;
         newElement.style.cssText += 'position: absolute; left: ' + horizontal.toString() + '%; top: ' + vertical.toString() + '%; transform: translate(-50%, -50%);'

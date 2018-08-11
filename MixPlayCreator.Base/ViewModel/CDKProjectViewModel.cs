@@ -11,6 +11,8 @@ namespace MixPlayCreator.Base.ViewModel
 {
     public class CDKProjectViewModel
     {
+        public const string MixPlayCreatorSettingsFileBrowserFilter = "MixPlay Creator Settings|*.mpc|All files (*.*)|*.*";
+
         public static string ApplicationDirectory { get { return Path.GetDirectoryName(typeof(CDKProjectViewModel).Assembly.Location); } }
         public static string TemplateIndexHTMLFilePath { get { return Path.Combine(CDKProjectViewModel.ApplicationDirectory, "Assets", "index.html"); } }
         public static string TemplateScriptJSFilePath { get { return Path.Combine(CDKProjectViewModel.ApplicationDirectory, "Assets", "scripts.js"); } }
@@ -18,12 +20,13 @@ namespace MixPlayCreator.Base.ViewModel
         public CDKProjectModel Model { get; set; }
 
         public CDKProjectViewModel(string directoryPath)
-            : this(new CDKProjectModel(directoryPath))
+            : this(new CDKProjectModel(directoryPath), null)
         {
             this.Scenes.Add(new SceneViewModel("default"));
+            this.SettingsFilePath = this.DefaultSettingFileName;
         }
 
-        public CDKProjectViewModel(CDKProjectModel model)
+        public CDKProjectViewModel(CDKProjectModel model, string settingsFilePath)
         {
             this.Model = model;
             this.Scenes = new List<SceneViewModel>();
@@ -31,9 +34,11 @@ namespace MixPlayCreator.Base.ViewModel
             {
                 this.Scenes.Add(new SceneViewModel(scene));
             }
+            this.SettingsFilePath = settingsFilePath;
         }
 
         public List<SceneViewModel> Scenes { get; set; }
+        public string SettingsFilePath { get; set; }
 
         public string SourceFolderPath { get { return string.Format("{0}\\src", this.Model.DirectoryPath); } }
         public string IndexHTMLFilePath { get { return string.Format("{0}\\index.html", this.SourceFolderPath); } }
@@ -42,7 +47,7 @@ namespace MixPlayCreator.Base.ViewModel
         public string LinkedInteractiveGameJSONFilePath { get { return string.Format("{0}\\.cdk\\linkedInteractiveGame.json", this.Model.DirectoryPath); } }
         public string WorldSchemaFilePath { get { return string.Format("{0}\\.cdk\\worldSchema.json", this.Model.DirectoryPath); } }
 
-        public string SettingsDirectory { get { return Path.Combine(ApplicationDirectory, "Settings"); } }
+        public string DefaultSettingFileName { get { return new DirectoryInfo(this.Model.DirectoryPath).Name + ".mpc"; } }
 
         public async Task Save()
         {
@@ -53,11 +58,6 @@ namespace MixPlayCreator.Base.ViewModel
 
         private async Task SaveSettings()
         {
-            if (!Directory.Exists(this.SettingsDirectory))
-            {
-                Directory.CreateDirectory(this.SettingsDirectory);
-            }
-
             this.Model.Scenes.Clear();
             foreach (SceneViewModel scene in this.Scenes)
             {
@@ -69,8 +69,7 @@ namespace MixPlayCreator.Base.ViewModel
                 }
             }
 
-            string settingsFilePath = Path.Combine(this.SettingsDirectory, new DirectoryInfo(this.Model.DirectoryPath).Name + ".json");
-            using (StreamWriter writer = new StreamWriter(File.Open(settingsFilePath, FileMode.Create)))
+            using (StreamWriter writer = new StreamWriter(File.Open(this.SettingsFilePath, FileMode.Create)))
             {
                 await writer.WriteAsync(SerializerHelper.SerializeObjectToString(this.Model));
             }
@@ -142,12 +141,12 @@ namespace MixPlayCreator.Base.ViewModel
                     if (item is TextItemViewModel)
                     {
                         TextItemViewModel textItem = (TextItemViewModel)item;
-                        definedItems.AppendFormat("addText(\"{0}\", \"{1}\", {2}, \"{3}\", \"{4}\", {5}, {6}, {7}, {8});", textItem.Name, textItem.Text, textItem.Size, textItem.Color.ToLower(), textItem.Font, textItem.LeftPosition, textItem.TopPosition, textItem.IsVisible.ToString().ToLower(), textItem.IsInteractive.ToString().ToLower());
+                        definedItems.Append("addText(\"" + item.Name + "\", \"" + scene.Name + "\", \"" + textItem.Text + "\", " + textItem.Size + ", \"" + textItem.Color.ToLower() + "\", \"" + textItem.Font + "\", " + item.LeftPosition + ", " + item.TopPosition + ", " + item.IsVisible.ToString().ToLower() + ", " + item.IsInteractive.ToString().ToLower() + ");");
                     }
                     else if (item is ImageItemViewModel)
                     {
                         ImageItemViewModel imageItem = (ImageItemViewModel)item;
-                        definedItems.AppendFormat("addImage(\"{0}\", \"{1}\", {2}, {3}, {4}, {5}, {6}, {7});", imageItem.Name, Path.GetFileName(imageItem.SourcePath), imageItem.Width, imageItem.Height, imageItem.LeftPosition, imageItem.TopPosition, imageItem.IsVisible.ToString().ToLower(), imageItem.IsInteractive.ToString().ToLower());
+                        definedItems.Append("addImage(\"" + item.Name + "\", \"" + scene.Name + "\", \"" + Path.GetFileName(imageItem.SourcePath) + "\", " + imageItem.Width + ", " + imageItem.Height + ", " + item.LeftPosition + ", " + item.TopPosition + ", " + item.IsVisible.ToString().ToLower() + ", " + item.IsInteractive.ToString().ToLower() + ");");
                         if (File.Exists(imageItem.SourcePath))
                         {
                             File.Copy(imageItem.SourcePath, Path.Combine(this.SourceFolderPath, Path.GetFileName(imageItem.SourcePath)), overwrite: true);
@@ -161,7 +160,6 @@ namespace MixPlayCreator.Base.ViewModel
                             File.Copy(soundItem.SourcePath, Path.Combine(this.SourceFolderPath, Path.GetFileName(soundItem.SourcePath)), overwrite: true);
                         }
                     }
-
                     definedItems.AppendLine();
                 }
             }

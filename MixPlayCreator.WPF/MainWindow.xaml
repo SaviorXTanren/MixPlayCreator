@@ -56,13 +56,13 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="AddSceneButton" Grid.Column="0" Click="AddSceneButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Add Scene">
+                <Button x:Name="AddSceneButton" Grid.Column="0" Click="AddSceneButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Add Scene" Visibility="Collapsed">
                     <Image Source="/Assets/AddScene.png" />
                 </Button>
 
                 <ComboBox x:Name="CurrentSceneComboBox" Grid.Column="2" Width="200" MaterialDesign:HintAssist.Hint="Current Scene" Style="{StaticResource MaterialDesignFloatingHintComboBox}" DisplayMemberPath="Name" SelectionChanged="CurrentSceneComboBox_SelectionChanged" />
 
-                <Button x:Name="DeleteSceneButton" Grid.Column="4" Click="DeleteSceneButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Delete Scene">
+                <Button x:Name="DeleteSceneButton" Grid.Column="4" Click="DeleteSceneButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Delete Scene" Visibility="Collapsed">
                     <Image Source="/Assets/DeleteScene.png" />
                 </Button>
             </Grid>

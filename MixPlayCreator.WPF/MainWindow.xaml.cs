@@ -1,5 +1,8 @@
-﻿using Mixer.Base.Util;
+﻿using Microsoft.Win32;
+using Mixer.Base.Util;
+using MixPlayCreator.Base.Model;
 using MixPlayCreator.Base.Model.Items;
+using MixPlayCreator.Base.Util;
 using MixPlayCreator.Base.ViewModel;
 using MixPlayCreator.Base.ViewModel.Items;
 using MixPlayCreator.WPF.Controls.Editors;
@@ -8,6 +11,7 @@ using MixPlayCreator.WPF.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -65,13 +69,6 @@ namespace MixPlayCreator.WPF
             ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
 
             App.Project = new CDKProjectViewModel(@"S:\Code\MixPlayCreator\CDKProjectSample");
-
-            this.CurrentSceneComboBox.ItemsSource = this.scenes;
-            foreach (SceneViewModel scene in App.Project.Scenes)
-            {
-                this.scenes.Add(scene);
-            }
-            this.CurrentSceneComboBox.SelectedIndex = 0;
         }
 
         private void NewProjectButton_Click(object sender, RoutedEventArgs e)
@@ -79,9 +76,27 @@ namespace MixPlayCreator.WPF
 
         }
 
-        private void OpenProjectButton_Click(object sender, RoutedEventArgs e)
+        private async void OpenProjectButton_Click(object sender, RoutedEventArgs e)
         {
+            await this.LoadingOperation(async () =>
+            {
+                OpenFileDialog fileDialog = new OpenFileDialog();
+                fileDialog.Filter = CDKProjectViewModel.MixPlayCreatorSettingsFileBrowserFilter;
+                fileDialog.CheckFileExists = true;
+                fileDialog.CheckPathExists = true;
+                if (fileDialog.ShowDialog() == true)
+                {
+                    using (StreamReader reader = new StreamReader(File.OpenRead(fileDialog.FileName)))
+                    {
+                        string fileContents = await reader.ReadToEndAsync();
+                        CDKProjectModel project = SerializerHelper.DeserializeObjectFromString<CDKProjectModel>(fileContents);
+                        App.Project = new CDKProjectViewModel(project, fileDialog.FileName);
+                    }
 
+                    this.RefreshSceneList();
+                    this.CurrentSceneComboBox.SelectedIndex = 0;
+                }
+            });
         }
 
         private async void SaveProjectButton_Click(object sender, RoutedEventArgs e)
@@ -104,7 +119,15 @@ namespace MixPlayCreator.WPF
                         }
                     }
 
-                    await App.Project.Save();
+                    SaveFileDialog fileDialog = new SaveFileDialog();
+                    fileDialog.Filter = CDKProjectViewModel.MixPlayCreatorSettingsFileBrowserFilter;
+                    fileDialog.CheckPathExists = true;
+                    fileDialog.FileName = App.Project.SettingsFilePath;
+                    if (fileDialog.ShowDialog() == true)
+                    {
+                        App.Project.SettingsFilePath = fileDialog.FileName;
+                        await App.Project.Save();
+                    }
                 }
             });
         }
