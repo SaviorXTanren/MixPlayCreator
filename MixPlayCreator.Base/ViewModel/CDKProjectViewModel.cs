@@ -156,7 +156,6 @@ namespace MixPlayCreator.Base.ViewModel
                     else if (item is SoundItemViewModel)
                     {
                         SoundItemViewModel soundItem = (SoundItemViewModel)item;
-                        definedItems.AppendFormat("playSound(\"{0}\");", Path.GetFileName(soundItem.SourcePath));
                         if (File.Exists(soundItem.SourcePath))
                         {
                             File.Copy(soundItem.SourcePath, Path.Combine(this.SourceFolderPath, Path.GetFileName(soundItem.SourcePath)), overwrite: true);

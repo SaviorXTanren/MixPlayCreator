@@ -155,8 +155,17 @@ namespace MixPlayCreator.WPF
             });
         }
 
-        private void ItemViewModel_ItemAdditionOccurred(object sender, ItemViewModel e)
+        private void ItemViewModel_ItemAdditionOccurred(object sender, ItemViewModel item)
         {
+            string originalName = item.Name;
+            int index = 1;
+            IEnumerable<ItemViewModel> allItems = App.Project.Scenes.SelectMany(s => s.Items);
+            while (allItems.Any(i => !i.Equals(item) && i.Name.Equals(item.Name)))
+            {
+                item.Name = originalName + index.ToString();
+                index++;
+            }
+
             this.RefreshItemsList();
         }
 
