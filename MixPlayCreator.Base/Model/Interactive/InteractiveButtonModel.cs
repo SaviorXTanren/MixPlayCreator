@@ -1,5 +1,4 @@
 ﻿using Mixer.Base.Model.Interactive;
-using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
 
 namespace MixPlayCreator.Base.Model.Interactive
@@ -14,16 +13,15 @@ namespace MixPlayCreator.Base.Model.Interactive
 
         public InteractiveButtonModel(string id) : base(id, InteractiveTypeEnum.Button) { }
 
-        public override JObject GetInteractiveJObject()
+        public override InteractiveButtonControlModel GetInteractiveControl()
         {
-            InteractiveButtonControlModel button = new InteractiveButtonControlModel()
+            return new InteractiveButtonControlModel()
             {
                 controlID = this.ID,
                 text = this.ID,
                 cost = this.SparkCost,
                 disabled = false,
             };
-            return JObject.FromObject(button);
         }
     }
 }

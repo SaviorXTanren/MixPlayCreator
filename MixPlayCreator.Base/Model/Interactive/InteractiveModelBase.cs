@@ -24,6 +24,6 @@ namespace MixPlayCreator.Base.Model.Interactive
             this.Type = type;
         }
 
-        public abstract JObject GetInteractiveJObject();
+        public abstract InteractiveButtonControlModel GetInteractiveControl();
     }
 }

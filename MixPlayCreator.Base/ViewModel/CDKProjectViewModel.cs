@@ -1,4 +1,6 @@
-﻿using MixPlayCreator.Base.Model;
+﻿using Mixer.Base;
+using Mixer.Base.Model.Interactive;
+using MixPlayCreator.Base.Model;
 using MixPlayCreator.Base.Util;
 using MixPlayCreator.Base.ViewModel.Items;
 using Newtonsoft.Json.Linq;
@@ -48,11 +50,12 @@ namespace MixPlayCreator.Base.ViewModel
 
         public string DefaultSettingFileName { get { return new DirectoryInfo(this.Model.DirectoryPath).Name + ".mixplay"; } }
 
-        public async Task Save()
+        public async Task Save(MixerConnection connection)
         {
             await this.SaveSettings();
             await this.SaveWorldSchema();
             await this.SaveHTMLFiles();
+            await this.UploadLinkedInteractiveGame(connection);
         }
 
         private async Task SaveSettings()
@@ -91,12 +94,12 @@ namespace MixPlayCreator.Base.ViewModel
                     {
                         if (schema["name"] != null && schema["name"].ToString().Equals("$working"))
                         {
-                            JArray sceneData = new JArray();
+                            List<InteractiveSceneModel> sceneData = new List<InteractiveSceneModel>();
                             foreach (SceneViewModel scene in this.Scenes)
                             {
                                 sceneData.Add(scene.GetSceneData());
                             }
-                            schema["world"]["scenes"] = sceneData;
+                            schema["world"]["scenes"] = JArray.FromObject(sceneData);
                         }
                     }
 
@@ -169,6 +172,27 @@ namespace MixPlayCreator.Base.ViewModel
                 await writer.WriteAsync(scriptFileContents);
                 await writer.WriteAsync(definedItems.ToString());
             }
+        }
+
+        private async Task UploadLinkedInteractiveGame(MixerConnection connection)
+        {
+            InteractiveGameListingModel linkedGame = null;
+            using (StreamReader reader = new StreamReader(File.OpenRead(this.LinkedInteractiveGameJSONFilePath)))
+            {
+                string fileContents = await reader.ReadToEndAsync();
+                linkedGame = SerializerHelper.DeserializeObjectFromString<InteractiveGameListingModel>(fileContents);
+            }
+
+            InteractiveGameVersionModel version = linkedGame.versions[0];
+
+            version = await connection.Interactive.GetInteractiveGameVersion(version);
+            version.controls.scenes = new List<InteractiveSceneModel>();
+            foreach (SceneViewModel scene in this.Scenes)
+            {
+                version.controls.scenes.Add(scene.GetSceneData());
+            }
+
+            version = await connection.Interactive.UpdateInteractiveGameVersion(version);
         }
     }
 }

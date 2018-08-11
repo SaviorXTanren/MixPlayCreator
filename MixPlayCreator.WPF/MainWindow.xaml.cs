@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using Mixer.Base;
+using Mixer.Base.Model.User;
 using Mixer.Base.Util;
 using MixPlayCreator.Base.Model;
 using MixPlayCreator.Base.Model.Items;
@@ -11,6 +13,7 @@ using MixPlayCreator.WPF.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -28,6 +31,17 @@ namespace MixPlayCreator.WPF
     {
         private ObservableCollection<SceneViewModel> scenes = new ObservableCollection<SceneViewModel>();
         private ObservableCollection<ItemViewModel> items = new ObservableCollection<ItemViewModel>();
+
+        private MixerConnection connection;
+        private UserModel user;
+
+        private List<OAuthClientScopeEnum> scopes = new List<OAuthClientScopeEnum>()
+        {
+            OAuthClientScopeEnum.channel__details__self,
+            OAuthClientScopeEnum.interactive__manage__self,
+            OAuthClientScopeEnum.interactive__robot__self,
+            OAuthClientScopeEnum.user__details__self,
+        };
 
         public MainWindow()
         {
@@ -59,16 +73,36 @@ namespace MixPlayCreator.WPF
             }
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (ItemTypeEnum type in EnumHelper.GetEnumList<ItemTypeEnum>())
+            await this.LoadingOperation(async () =>
             {
-                this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel(type.ToString(), type)));
-            }
+                foreach (ItemTypeEnum type in EnumHelper.GetEnumList<ItemTypeEnum>())
+                {
+                    this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel(type.ToString(), type)));
+                }
 
-            ItemViewModel.ItemAdditionOccurred += ItemViewModel_ItemAdditionOccurred;
-            ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
-            ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
+                ItemViewModel.ItemAdditionOccurred += ItemViewModel_ItemAdditionOccurred;
+                ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
+                ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
+
+                this.connection = await MixerConnection.ConnectViaLocalhostOAuthBrowser(ConfigurationManager.AppSettings["ClientID"], scopes);
+                if (this.connection != null)
+                {
+                    try
+                    {
+                        this.user = await this.connection.Users.GetCurrentUser();
+                    }
+                    catch (Exception)
+                    {
+                        await DialogHelper.ShowMessageDialog("Unable to get your user information from Mixer, please try again");
+                    }
+                }
+                else
+                {
+                    await DialogHelper.ShowMessageDialog("Unable to log in to Mixer, please ensure you approve in a timely manner");
+                }
+            });
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -157,7 +191,7 @@ namespace MixPlayCreator.WPF
 
                     if (!string.IsNullOrEmpty(App.Project.SettingsFilePath))
                     {
-                        await App.Project.Save();
+                        await App.Project.Save(this.connection);
                     }
                 }
             });

@@ -1,7 +1,7 @@
-﻿using MixPlayCreator.Base.Model;
+﻿using Mixer.Base.Model.Interactive;
+using MixPlayCreator.Base.Model;
 using MixPlayCreator.Base.Model.Items;
 using MixPlayCreator.Base.ViewModel.Items;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace MixPlayCreator.Base.ViewModel
@@ -41,22 +41,22 @@ namespace MixPlayCreator.Base.ViewModel
             set { this.Model.Name = value; }
         }
 
-        public JObject GetSceneData()
+        public InteractiveSceneModel GetSceneData()
         {
-            JObject data = new JObject();
-            data["sceneID"] = this.Name;
+            InteractiveSceneModel scene = new InteractiveSceneModel()
+            {
+                sceneID = this.Name
+            };
 
-            JArray itemData = new JArray();
-            data["controls"] = itemData;
             foreach (ItemViewModel item in this.Items)
             {
                 if (item.Interactive != null)
                 {
                     item.Interactive.ID = item.Name;
-                    itemData.Add(item.Interactive.GetInteractiveJObject());
+                    scene.buttons.Add(item.Interactive.GetInteractiveControl());
                 }
             }
-            return data;
+            return scene;
         }
     }
 }

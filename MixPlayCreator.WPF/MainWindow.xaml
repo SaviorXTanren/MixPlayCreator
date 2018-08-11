@@ -16,6 +16,11 @@
 
         Title="MixPlay Creator" Width="1024" Height="768">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
         <MaterialDesign:DialogHost x:Name="MDDialogHost" Identifier="RootDialog" />
 
         <Grid x:Name="StartupGrid">
@@ -62,7 +67,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="5,0,0,0">
@@ -158,8 +162,8 @@
                     </Border>
                 </Grid>
             </Grid>
-
-            <ProgressBar x:Name="StatusBar" Grid.Row="2" IsIndeterminate="True" Visibility="Hidden" />
         </Grid>
+
+        <ProgressBar x:Name="StatusBar" Grid.Row="1" IsIndeterminate="True" Visibility="Hidden" />
     </Grid>
 </Window>
