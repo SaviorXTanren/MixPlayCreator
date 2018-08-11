@@ -11,6 +11,7 @@ using MixPlayCreator.WPF.Util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace MixPlayCreator.WPF
         {
             InitializeComponent();
 
+            this.CurrentSceneComboBox.ItemsSource = this.scenes;
             this.AllItems.ItemsSource = this.items;
 
             this.Loaded += MainWindow_Loaded;
@@ -67,16 +69,31 @@ namespace MixPlayCreator.WPF
             ItemViewModel.ItemAdditionOccurred += ItemViewModel_ItemAdditionOccurred;
             ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
             ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
-
-            App.Project = new CDKProjectViewModel(@"S:\Code\MixPlayCreator\CDKProjectSample");
         }
 
-        private void NewProjectButton_Click(object sender, RoutedEventArgs e)
+        private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
         {
-
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
 
-        private async void OpenProjectButton_Click(object sender, RoutedEventArgs e)
+        private async void NewProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            await this.LoadingOperation(() =>
+            {
+                using (var folderDialog = new System.Windows.Forms.FolderBrowserDialog())
+                {
+                    if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        App.Project = new CDKProjectViewModel(folderDialog.SelectedPath);
+                        this.SwitchToProjectGrid();
+                    }
+                }
+                return Task.FromResult(0);
+            });
+        }
+
+        private async void LoadProjectButton_Click(object sender, RoutedEventArgs e)
         {
             await this.LoadingOperation(async () =>
             {
@@ -93,10 +110,17 @@ namespace MixPlayCreator.WPF
                         App.Project = new CDKProjectViewModel(project, fileDialog.FileName);
                     }
 
-                    this.RefreshSceneList();
-                    this.CurrentSceneComboBox.SelectedIndex = 0;
+                    this.SwitchToProjectGrid();
                 }
             });
+        }
+
+        private void SwitchToProjectGrid()
+        {
+            this.StartupGrid.Visibility = Visibility.Hidden;
+            this.MainProjectGrid.Visibility = Visibility.Visible;
+            this.RefreshSceneList();
+            this.CurrentSceneComboBox.SelectedIndex = 0;
         }
 
         private async void SaveProjectButton_Click(object sender, RoutedEventArgs e)
@@ -119,13 +143,20 @@ namespace MixPlayCreator.WPF
                         }
                     }
 
-                    SaveFileDialog fileDialog = new SaveFileDialog();
-                    fileDialog.Filter = CDKProjectViewModel.MixPlayCreatorSettingsFileBrowserFilter;
-                    fileDialog.CheckPathExists = true;
-                    fileDialog.FileName = App.Project.SettingsFilePath;
-                    if (fileDialog.ShowDialog() == true)
+                    if (string.IsNullOrEmpty(App.Project.SettingsFilePath))
                     {
-                        App.Project.SettingsFilePath = fileDialog.FileName;
+                        SaveFileDialog fileDialog = new SaveFileDialog();
+                        fileDialog.Filter = CDKProjectViewModel.MixPlayCreatorSettingsFileBrowserFilter;
+                        fileDialog.CheckPathExists = true;
+                        fileDialog.FileName = App.Project.SettingsFilePath;
+                        if (fileDialog.ShowDialog() == true)
+                        {
+                            App.Project.SettingsFilePath = fileDialog.FileName;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(App.Project.SettingsFilePath))
+                    {
                         await App.Project.Save();
                     }
                 }

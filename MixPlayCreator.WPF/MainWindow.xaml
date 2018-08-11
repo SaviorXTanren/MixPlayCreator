@@ -18,7 +18,47 @@
     <Grid>
         <MaterialDesign:DialogHost x:Name="MDDialogHost" Identifier="RootDialog" />
 
-        <Grid>
+        <Grid x:Name="StartupGrid">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <GroupBox Grid.Column="0" Header="New Project" Margin="0,8,0,8" Width="250">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" TextWrapping="Wrap">Follow the steps shown here first, then click the button below:</TextBlock>
+
+                        <TextBlock Grid.Row="2" HorizontalAlignment="Center"><Hyperlink NavigateUri="https://github.com/SaviorXTanren/MixPlayCreator/wiki/Getting-Started" RequestNavigate="Hyperlink_RequestNavigate">Getting Started</Hyperlink></TextBlock>
+
+                        <Button Grid.Row="4" x:Name="NewProjectButton" Click="NewProjectButton_Click" Height="30" Width="120">New Project</Button>
+
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Column="2" Header="Load Project" Margin="0,8,0,8" Width="250">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0" x:Name="LoadProjectButton" Click="LoadProjectButton_Click" Height="30" Width="120">Load Project</Button>
+
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="MainProjectGrid" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -28,19 +68,7 @@
             <Grid Grid.Row="0" Margin="5,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-
-                <Button x:Name="NewProjectButton" Grid.Column="0" Click="NewProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="New Project">
-                    <Image Source="/Assets/NewProject.png" />
-                </Button>
-
-                <Button x:Name="OpenProjectButton" Grid.Column="2" Click="OpenProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Load Project">
-                    <Image Source="/Assets/OpenProject.png" />
-                </Button>
 
                 <Button x:Name="SaveProjectButton" Grid.Column="4" Click="SaveProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Save Project">
                     <Image Source="/Assets/SaveProject.png" />

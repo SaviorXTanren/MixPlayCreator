@@ -11,7 +11,7 @@ namespace MixPlayCreator.Base.ViewModel
 {
     public class CDKProjectViewModel
     {
-        public const string MixPlayCreatorSettingsFileBrowserFilter = "MixPlay Creator Settings|*.mpc|All files (*.*)|*.*";
+        public const string MixPlayCreatorSettingsFileBrowserFilter = "MixPlay Creator Settings|*.mixplay|All files (*.*)|*.*";
 
         public static string ApplicationDirectory { get { return Path.GetDirectoryName(typeof(CDKProjectViewModel).Assembly.Location); } }
         public static string TemplateIndexHTMLFilePath { get { return Path.Combine(CDKProjectViewModel.ApplicationDirectory, "Assets", "index.html"); } }
@@ -23,7 +23,6 @@ namespace MixPlayCreator.Base.ViewModel
             : this(new CDKProjectModel(directoryPath), null)
         {
             this.Scenes.Add(new SceneViewModel("default"));
-            this.SettingsFilePath = this.DefaultSettingFileName;
         }
 
         public CDKProjectViewModel(CDKProjectModel model, string settingsFilePath)
@@ -47,7 +46,7 @@ namespace MixPlayCreator.Base.ViewModel
         public string LinkedInteractiveGameJSONFilePath { get { return string.Format("{0}\\.cdk\\linkedInteractiveGame.json", this.Model.DirectoryPath); } }
         public string WorldSchemaFilePath { get { return string.Format("{0}\\.cdk\\worldSchema.json", this.Model.DirectoryPath); } }
 
-        public string DefaultSettingFileName { get { return new DirectoryInfo(this.Model.DirectoryPath).Name + ".mpc"; } }
+        public string DefaultSettingFileName { get { return new DirectoryInfo(this.Model.DirectoryPath).Name + ".mixplay"; } }
 
         public async Task Save()
         {
