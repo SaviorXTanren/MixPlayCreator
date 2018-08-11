@@ -72,6 +72,9 @@
     <Compile Include="Controls\Dialogs\BasicTextEntryDialogControl.xaml.cs">
       <DependentUpon>BasicTextEntryDialogControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dialogs\ProjectUploadCompleteDialogControl.xaml.cs">
+      <DependentUpon>ProjectUploadCompleteDialogControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Editors\SoundItemEditorControl.xaml.cs">
       <DependentUpon>SoundItemEditorControl.xaml</DependentUpon>
     </Compile>
@@ -81,6 +84,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dialogs\ConfirmationDialogControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ProjectUploadCompleteDialogControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -204,9 +211,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\TextItem.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <Resource Include="Assets\TextItem.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\ImageItem.png" />
@@ -228,6 +233,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\SoundItem.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\UploadProject.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

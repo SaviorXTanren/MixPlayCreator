@@ -7,6 +7,7 @@ using MixPlayCreator.Base.Model.Items;
 using MixPlayCreator.Base.Util;
 using MixPlayCreator.Base.ViewModel;
 using MixPlayCreator.Base.ViewModel.Items;
+using MixPlayCreator.WPF.Controls.Dialogs;
 using MixPlayCreator.WPF.Controls.Editors;
 using MixPlayCreator.WPF.Controls.Items;
 using MixPlayCreator.WPF.Util;
@@ -73,36 +74,16 @@ namespace MixPlayCreator.WPF
             }
         }
 
-        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            await this.LoadingOperation(async () =>
+            foreach (ItemTypeEnum type in EnumHelper.GetEnumList<ItemTypeEnum>())
             {
-                foreach (ItemTypeEnum type in EnumHelper.GetEnumList<ItemTypeEnum>())
-                {
-                    this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel(type.ToString(), type)));
-                }
+                this.ItemsTypeStackPanel.Children.Add(new ItemTypeControl(new ItemModel(type.ToString(), type)));
+            }
 
-                ItemViewModel.ItemAdditionOccurred += ItemViewModel_ItemAdditionOccurred;
-                ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
-                ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
-
-                this.connection = await MixerConnection.ConnectViaLocalhostOAuthBrowser(ConfigurationManager.AppSettings["ClientID"], scopes);
-                if (this.connection != null)
-                {
-                    try
-                    {
-                        this.user = await this.connection.Users.GetCurrentUser();
-                    }
-                    catch (Exception)
-                    {
-                        await DialogHelper.ShowMessageDialog("Unable to get your user information from Mixer, please try again");
-                    }
-                }
-                else
-                {
-                    await DialogHelper.ShowMessageDialog("Unable to log in to Mixer, please ensure you approve in a timely manner");
-                }
-            });
+            ItemViewModel.ItemAdditionOccurred += ItemViewModel_ItemAdditionOccurred;
+            ItemViewModel.ItemSelectionChanged += ItemControlBase_ItemSelectionChanged;
+            ItemViewModel.ItemDeletionOccurred += ItemViewModel_ItemDeletionOccurred;
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
@@ -191,8 +172,40 @@ namespace MixPlayCreator.WPF
 
                     if (!string.IsNullOrEmpty(App.Project.SettingsFilePath))
                     {
-                        await App.Project.Save(this.connection);
+                        await App.Project.Save();
                     }
+                }
+            });
+        }
+
+        private async void UploadProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            await this.LoadingOperation(async () =>
+            {
+                if (this.connection == null)
+                {
+                    this.connection = await MixerConnection.ConnectViaLocalhostOAuthBrowser(ConfigurationManager.AppSettings["ClientID"], scopes);
+                    if (this.connection != null)
+                    {
+                        try
+                        {
+                            this.user = await this.connection.Users.GetCurrentUser();
+                        }
+                        catch (Exception)
+                        {
+                            await DialogHelper.ShowMessageDialog("Unable to get your user information from Mixer, please try again");
+                        }
+                    }
+                    else
+                    {
+                        await DialogHelper.ShowMessageDialog("Unable to log in to Mixer, please ensure you approve in a timely manner");
+                    }
+                }
+
+                if (this.connection != null)
+                {
+                    await App.Project.UploadLinkedInteractiveGame(this.connection);
+                    await DialogHelper.ShowDialog(new ProjectUploadCompleteDialogControl());
                 }
             });
         }

@@ -32,7 +32,7 @@
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Column="0" Header="New Project" Margin="0,8,0,8" Width="250">
-                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="20" />
@@ -51,7 +51,7 @@
                 </GroupBox>
 
                 <GroupBox Grid.Column="2" Header="Load Project" Margin="0,8,0,8" Width="250">
-                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
@@ -72,10 +72,16 @@
             <Grid Grid.Row="0" Margin="5,0,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Button x:Name="SaveProjectButton" Grid.Column="4" Click="SaveProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Save Project">
+                <Button x:Name="SaveProjectButton" Grid.Column="0" Click="SaveProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Save Project">
                     <Image Source="/Assets/SaveProject.png" />
+                </Button>
+
+                <Button x:Name="UploadProjectButton" Grid.Column="2" Click="UploadProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Upload Project">
+                    <Image Source="/Assets/UploadProject.png" />
                 </Button>
             </Grid>
 

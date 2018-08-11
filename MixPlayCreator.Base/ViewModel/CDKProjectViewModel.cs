@@ -50,12 +50,32 @@ namespace MixPlayCreator.Base.ViewModel
 
         public string DefaultSettingFileName { get { return new DirectoryInfo(this.Model.DirectoryPath).Name + ".mixplay"; } }
 
-        public async Task Save(MixerConnection connection)
+        public async Task Save()
         {
             await this.SaveSettings();
             await this.SaveWorldSchema();
             await this.SaveHTMLFiles();
-            await this.UploadLinkedInteractiveGame(connection);
+        }
+
+        public async Task UploadLinkedInteractiveGame(MixerConnection connection)
+        {
+            InteractiveGameListingModel linkedGame = null;
+            using (StreamReader reader = new StreamReader(File.OpenRead(this.LinkedInteractiveGameJSONFilePath)))
+            {
+                string fileContents = await reader.ReadToEndAsync();
+                linkedGame = SerializerHelper.DeserializeObjectFromString<InteractiveGameListingModel>(fileContents);
+            }
+
+            InteractiveGameVersionModel version = linkedGame.versions[0];
+
+            version = await connection.Interactive.GetInteractiveGameVersion(version);
+            version.controls.scenes = new List<InteractiveSceneModel>();
+            foreach (SceneViewModel scene in this.Scenes)
+            {
+                version.controls.scenes.Add(scene.GetSceneData());
+            }
+
+            version = await connection.Interactive.UpdateInteractiveGameVersion(version);
         }
 
         private async Task SaveSettings()
@@ -172,27 +192,6 @@ namespace MixPlayCreator.Base.ViewModel
                 await writer.WriteAsync(scriptFileContents);
                 await writer.WriteAsync(definedItems.ToString());
             }
-        }
-
-        private async Task UploadLinkedInteractiveGame(MixerConnection connection)
-        {
-            InteractiveGameListingModel linkedGame = null;
-            using (StreamReader reader = new StreamReader(File.OpenRead(this.LinkedInteractiveGameJSONFilePath)))
-            {
-                string fileContents = await reader.ReadToEndAsync();
-                linkedGame = SerializerHelper.DeserializeObjectFromString<InteractiveGameListingModel>(fileContents);
-            }
-
-            InteractiveGameVersionModel version = linkedGame.versions[0];
-
-            version = await connection.Interactive.GetInteractiveGameVersion(version);
-            version.controls.scenes = new List<InteractiveSceneModel>();
-            foreach (SceneViewModel scene in this.Scenes)
-            {
-                version.controls.scenes.Add(scene.GetSceneData());
-            }
-
-            version = await connection.Interactive.UpdateInteractiveGameVersion(version);
         }
     }
 }
