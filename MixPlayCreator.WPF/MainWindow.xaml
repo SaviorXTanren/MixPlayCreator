@@ -127,7 +127,8 @@
                     <Border Grid.Row="0" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="1">
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
                             <StackPanel>
-                                <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">Add Item (Drag &amp; Drop Item Below):</TextBlock>
+                                <TextBlock HorizontalAlignment="Center" Margin="0,10,0,0" TextDecorations="Underline" FontWeight="Bold">Add Items</TextBlock>
+                                <TextBlock HorizontalAlignment="Center" TextDecorations="Underline" FontWeight="Bold">(Drag &amp; Drop From Below):</TextBlock>
                                 <StackPanel x:Name="ItemsTypeStackPanel" Margin="0,10" />
                             </StackPanel>
                         </ScrollViewer>
