@@ -70,6 +70,9 @@ namespace MixPlayCreator.WPF.Controls
                     case ItemTypeEnum.Sound:
                         this.AddNewItem(new SoundItemViewModel());
                         break;
+                    case ItemTypeEnum.Video:
+                        this.AddNewItemToCanvas(new VideoItemViewModel(), (int)dropPoint.X, (int)dropPoint.Y);
+                        break;
                 }
                 e.Effects = DragDropEffects.Move;
             }
@@ -109,6 +112,9 @@ namespace MixPlayCreator.WPF.Controls
                     break;
                 case ItemTypeEnum.Image:
                     this.AddItemControlToCanvas(new ImageItemControl((ImageItemViewModel)item), x, y, isNewItem);
+                    break;
+                case ItemTypeEnum.Video:
+                    this.AddItemControlToCanvas(new VideoItemControl((VideoItemViewModel)item), x, y, isNewItem);
                     break;
             }
         }

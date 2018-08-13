@@ -78,6 +78,12 @@
     <Compile Include="Controls\Editors\SoundItemEditorControl.xaml.cs">
       <DependentUpon>SoundItemEditorControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Editors\VideoItemEditorControl.xaml.cs">
+      <DependentUpon>VideoItemEditorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Items\VideoItemControl.xaml.cs">
+      <DependentUpon>VideoItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Util\DialogHelper.cs" />
     <Page Include="Controls\Dialogs\BasicTextEntryDialogControl.xaml">
       <SubType>Designer</SubType>
@@ -107,6 +113,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Editors\VideoItemEditorControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ItemsCanvasControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -124,6 +134,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dialogs\MessageDialogControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Items\VideoItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -236,6 +250,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\UploadProject.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\VideoPlaceholder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\VideoItem.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

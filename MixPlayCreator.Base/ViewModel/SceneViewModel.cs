@@ -29,6 +29,9 @@ namespace MixPlayCreator.Base.ViewModel
                     case ItemTypeEnum.Sound:
                         this.Items.Add(new SoundItemViewModel((SoundItemModel)item));
                         break;
+                    case ItemTypeEnum.Video:
+                        this.Items.Add(new VideoItemViewModel((VideoItemModel)item));
+                        break;
                 }
             }
         }

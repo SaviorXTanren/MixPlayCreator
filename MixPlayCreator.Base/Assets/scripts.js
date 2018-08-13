@@ -4,6 +4,8 @@ var mainDiv;
 
 var mediaPlaying = {};
 
+var videoProperties = {};
+
 $.fn.extend({
 	animateCss: function (animationName, callback) {
 		var animationEnd = (function (el) {
@@ -70,41 +72,43 @@ function playVideo(link) {
     }
     mediaPlaying[link] = true;
 
-    var newElement = document.createElement('video');
-    newElement.width = 600;
-    newElement.height = 400;
-    newElement.frameBorder = 0;
-    newElement.allow = "encrypted-media";
-    newElement.setAttribute('autoplay', '');
+    if (videoProperties[link]) {
+        var newElement = document.createElement('video');
+        newElement.width = videoProperties[link].width;
+        newElement.height = videoProperties[link].height;
+        newElement.frameBorder = 0;
+        newElement.allow = "encrypted-media";
+        newElement.setAttribute('autoplay', '');
 
-    var sourceElement = document.createElement('source');
-    sourceElement.src = link;
-    if (link.endsWith(".mp4")) {
-        sourceElement.type = "video/mp4";
-    }
-    else if (link.endsWith(".webm")) {
-        sourceElement.type = "video/webm";
-    }
-    newElement.appendChild(sourceElement);
+        var sourceElement = document.createElement('source');
+        sourceElement.src = link;
+        if (link.endsWith(".mp4")) {
+            sourceElement.type = "video/mp4";
+        }
+        else if (link.endsWith(".webm")) {
+            sourceElement.type = "video/webm";
+        }
+        newElement.appendChild(sourceElement);
 
-    addElement(newElement, link, "Video", 50, 50, true, false);
+        addElement(newElement, link, "Video", videoProperties[link].x, videoProperties[link].y, true, false);
 
-    var promise = newElement.play();
-    if (promise !== undefined) {
-        promise.then(_ => {
-            // Autoplay started!
-        }).catch(error => {
+        var promise = newElement.play();
+        if (promise !== undefined) {
+            promise.then(_ => {
+                // Autoplay started!
+            }).catch(error => {
+                removeElement(newElement);
+            });
+        }
+
+        newElement.onended = function () {
             removeElement(newElement);
-        });
+        };
+
+        setTimeout(function () {
+            mediaPlaying[link] = false;
+        }, 2000);
     }
-
-    newElement.onended = function () {
-        removeElement(newElement);
-    };
-
-    setTimeout(function () {
-        mediaPlaying[link] = false;
-    }, 2000);
 }
 
 function addElement(element, id, scene, horizontal, vertical, visible, makeButton) {
@@ -132,8 +136,6 @@ function removeElement(element) {
 }
 
 function buttonClicked(id) {
-    playVideo("woah.mp4");
-
     mixer.socket.call('giveInput', {
         controlID: id,
         event: 'mousedown'

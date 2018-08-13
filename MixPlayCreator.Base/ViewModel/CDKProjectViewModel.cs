@@ -182,6 +182,16 @@ namespace MixPlayCreator.Base.ViewModel
                             File.Copy(soundItem.SourcePath, Path.Combine(this.SourceFolderPath, Path.GetFileName(soundItem.SourcePath)), overwrite: true);
                         }
                     }
+                    else if (item is VideoItemViewModel)
+                    {
+                        VideoItemViewModel videoItem = (VideoItemViewModel)item;
+                        string filename = Path.GetFileName(videoItem.SourcePath);
+                        definedItems.Append("videoProperties[\"" + filename + "\"] = { x: " + item.LeftPosition + ", y: " + item.TopPosition + ", width: " + videoItem.Width + ", height: " + videoItem.Height + " };");
+                        if (File.Exists(videoItem.SourcePath))
+                        {
+                            File.Copy(videoItem.SourcePath, Path.Combine(this.SourceFolderPath, filename), overwrite: true);
+                        }
+                    }
                     definedItems.AppendLine();
                 }
             }

@@ -10,6 +10,7 @@ namespace MixPlayCreator.Base.Model.Items
         Text = 0,
         Image = 1,
         Sound = 2,
+        Video = 3,
     }
 
     [DataContract]
@@ -57,6 +58,7 @@ namespace MixPlayCreator.Base.Model.Items
                     case ItemTypeEnum.Text: return "/Assets/TextItem.png";
                     case ItemTypeEnum.Image: return "/Assets/ImageItem.png";
                     case ItemTypeEnum.Sound: return "/Assets/SoundItem.png";
+                    case ItemTypeEnum.Video: return "/Assets/VideoItem.png";
                 }
                 return null;
             }

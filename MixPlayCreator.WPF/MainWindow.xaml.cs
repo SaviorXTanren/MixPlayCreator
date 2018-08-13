@@ -285,6 +285,9 @@ namespace MixPlayCreator.WPF
                     case ItemTypeEnum.Sound:
                         this.ItemEditorContentControl.Content = new SoundItemEditorControl((SoundItemViewModel)item);
                         break;
+                    case ItemTypeEnum.Video:
+                        this.ItemEditorContentControl.Content = new VideoItemEditorControl((VideoItemViewModel)item);
+                        break;
                 }
                 
                 if (this.AllItems.SelectedItem != item)
