@@ -90,7 +90,32 @@ function handleVideoResized(position) {
 }
 
 function handleControlUpdate(update) {
+    if (update.controls != null) {
+        for (var i = 0; i < update.controls.length; i++) {
+            var controlID = update.controls[i].controlID;
+            var element = document.getElementById(controlID);
+            if (element != null) {
+                var metadata = update.controls[i].meta;
 
+                if (metadata.visible != null) {
+                    if (metadata.visible) {
+                        element.style.cssText += 'visibility: visible;'
+                    }
+                    else {
+                        element.style.cssText += 'visibility: hidden;'
+                    }
+                }
+                if (metadata.playsound != null) {
+                    playSound(metadata.playsound);
+                }
+            }
+        }
+    }
+
+    const filteredControls = update.controls.filter(c => c.controlID === 'position');
+    if (filteredControls.length !== 1) {
+        return;
+    }
 }
 
 window.addEventListener('load', function initMixer() {
