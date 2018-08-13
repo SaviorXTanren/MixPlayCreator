@@ -163,12 +163,12 @@ namespace MixPlayCreator.Base.ViewModel
                     if (item is TextItemViewModel)
                     {
                         TextItemViewModel textItem = (TextItemViewModel)item;
-                        definedItems.Append("addText(\"" + item.Name + "\", \"" + scene.Name + "\", \"" + textItem.Text + "\", " + textItem.Size + ", \"" + textItem.Color.ToLower() + "\", \"" + textItem.Font + "\", " + item.LeftPosition + ", " + item.TopPosition + ", " + item.IsVisible.ToString().ToLower() + ", " + item.IsInteractive.ToString().ToLower() + ");");
+                        definedItems.Append("addText(\"" + item.Name + "\", \"" + scene.Name + "\", \"" + textItem.Text + "\", " + textItem.Size + ", \"" + textItem.Color.ToLower() + "\", \"" + textItem.Font + "\", " + item.XPosition + ", " + item.YPosition + ", " + item.IsVisible.ToString().ToLower() + ", " + item.IsInteractive.ToString().ToLower() + ");");
                     }
                     else if (item is ImageItemViewModel)
                     {
                         ImageItemViewModel imageItem = (ImageItemViewModel)item;
-                        definedItems.Append("addImage(\"" + item.Name + "\", \"" + scene.Name + "\", \"" + Path.GetFileName(imageItem.SourcePath) + "\", " + imageItem.Width + ", " + imageItem.Height + ", " + item.LeftPosition + ", " + item.TopPosition + ", " + item.IsVisible.ToString().ToLower() + ", " + item.IsInteractive.ToString().ToLower() + ");");
+                        definedItems.Append("addImage(\"" + item.Name + "\", \"" + scene.Name + "\", \"" + Path.GetFileName(imageItem.SourcePath) + "\", " + imageItem.Width + ", " + imageItem.Height + ", " + item.XPosition + ", " + item.YPosition + ", " + item.IsVisible.ToString().ToLower() + ", " + item.IsInteractive.ToString().ToLower() + ");");
                         if (File.Exists(imageItem.SourcePath))
                         {
                             File.Copy(imageItem.SourcePath, Path.Combine(this.SourceFolderPath, Path.GetFileName(imageItem.SourcePath)), overwrite: true);
@@ -186,7 +186,7 @@ namespace MixPlayCreator.Base.ViewModel
                     {
                         VideoItemViewModel videoItem = (VideoItemViewModel)item;
                         string filename = Path.GetFileName(videoItem.SourcePath);
-                        definedItems.Append("videoProperties[\"" + filename + "\"] = { x: " + item.LeftPosition + ", y: " + item.TopPosition + ", width: " + videoItem.Width + ", height: " + videoItem.Height + " };");
+                        definedItems.Append("videoProperties[\"" + filename + "\"] = { x: " + item.XPosition + ", y: " + item.YPosition + ", width: " + videoItem.Width + ", height: " + videoItem.Height + " };");
                         if (File.Exists(videoItem.SourcePath))
                         {
                             File.Copy(videoItem.SourcePath, Path.Combine(this.SourceFolderPath, filename), overwrite: true);

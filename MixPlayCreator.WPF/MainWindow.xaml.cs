@@ -163,7 +163,7 @@ namespace MixPlayCreator.WPF
                         SaveFileDialog fileDialog = new SaveFileDialog();
                         fileDialog.Filter = CDKProjectViewModel.MixPlayCreatorSettingsFileBrowserFilter;
                         fileDialog.CheckPathExists = true;
-                        fileDialog.FileName = App.Project.SettingsFilePath;
+                        fileDialog.FileName = App.Project.DefaultSettingFileName;
                         if (fileDialog.ShowDialog() == true)
                         {
                             App.Project.SettingsFilePath = fileDialog.FileName;

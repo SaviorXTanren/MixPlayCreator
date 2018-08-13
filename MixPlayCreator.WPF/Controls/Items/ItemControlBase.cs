@@ -29,12 +29,19 @@ namespace MixPlayCreator.WPF.Controls.Items
             ItemViewModel.ItemZIndexChangeOccurred += ItemViewModel_ItemZIndexChangeOccurred;
         }
 
+        public double CenterXPosition { get { return (Canvas.GetLeft(this) + (this.ActualWidth / 2.0)); } }
+        public double CenterYPosition { get { return (Canvas.GetTop(this) + (this.ActualHeight / 2.0)); } }
+
+        public void SetItemZIndex()
+        {
+            Canvas.SetZIndex(this, this.Item.ZIndex);
+        }
+
         public void UpdateModelPosition()
         {
-            Tuple<int, int> position = this.ItemCanvas.GetItemCoordinates(this);
-            Tuple<int, int> canvasSize = this.ItemCanvas.GetCanvasSize();
-            this.Item.SetCanvasLeftPosition(position.Item1, canvasSize.Item1);
-            this.Item.SetCanvasTopPosition(position.Item2, canvasSize.Item2);
+            Tuple<double, double> canvasSize = this.ItemCanvas.GetCanvasSize();
+            this.Item.XPosition = ((this.CenterXPosition / canvasSize.Item1) * 100.0);
+            this.Item.YPosition = ((this.CenterYPosition / canvasSize.Item2) * 100.0);
         }
 
         protected virtual Task OnLoaded() { return Task.FromResult(0); }
@@ -73,10 +80,10 @@ namespace MixPlayCreator.WPF.Controls.Items
                     transform = new TranslateTransform();
                     this.RenderTransform = transform;
                 }
-                int xDiff = (int)(currentPosition.X - lastMousePosition.X);
-                int yDiff = (int)(currentPosition.Y - lastMousePosition.Y);
+                double xDiff = currentPosition.X - lastMousePosition.X;
+                double yDiff = currentPosition.Y - lastMousePosition.Y;
 
-                this.ItemCanvas.SetItemCoordinates(this, (int)Canvas.GetLeft(this) + xDiff, (int)Canvas.GetTop(this) + yDiff);
+                this.ItemCanvas.SetItemCoordinates(this, Canvas.GetLeft(this) + xDiff, Canvas.GetTop(this) + yDiff);
 
                 this.UpdateModelPosition();
 
@@ -106,7 +113,7 @@ namespace MixPlayCreator.WPF.Controls.Items
         {
             if (item != null && this.Item.Equals(item))
             {
-                this.ItemCanvas.SetItemZIndex(this);
+                this.SetItemZIndex();
             }
         }
     }

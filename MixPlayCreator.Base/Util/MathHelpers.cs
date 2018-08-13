@@ -8,5 +8,10 @@ namespace MixPlayCreator.Base.Util
         {
             return Math.Min(Math.Max(number, min), max);
         }
+
+        public static double Clamp(double number, double min, double max)
+        {
+            return Math.Min(Math.Max(number, min), max);
+        }
     }
 }

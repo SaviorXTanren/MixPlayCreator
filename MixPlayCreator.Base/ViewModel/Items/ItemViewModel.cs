@@ -64,23 +64,23 @@ namespace MixPlayCreator.Base.ViewModel.Items
             }
         }
 
-        public int LeftPosition
+        public double XPosition
         {
-            get { return this.Model.LeftPosition; }
+            get { return this.Model.XPosition; }
             set
             {
-                this.Model.LeftPosition = value;
-                this.NotifyPropertyChanged("LeftPosition");
+                this.Model.XPosition = value;
+                this.NotifyPropertyChanged("XPosition");
             }
         }
 
-        public int TopPosition
+        public double YPosition
         {
-            get { return this.Model.TopPosition; }
+            get { return this.Model.YPosition; }
             set
             {
-                this.Model.TopPosition = value;
-                this.NotifyPropertyChanged("TopPosition");
+                this.Model.YPosition = value;
+                this.NotifyPropertyChanged("YPosition");
             }
         }
 
@@ -154,11 +154,5 @@ namespace MixPlayCreator.Base.ViewModel.Items
         public string SelectedBorderBrush { get { return (this.IsSelected) ? "DarkBlue" : "Transparent"; } }
 
         public double VisibleOpacity { get { return (this.IsVisible) ? 1.0 : 0.25; } }
-
-        public int GetCanvasLeftPosition(int canvasWidth) { return (int)((0.01 * (double)this.LeftPosition) * (double)canvasWidth); }
-        public int GetCanvasTopPosition(int canvasHeight) { return (int)((0.01 * (double)this.TopPosition) * (double)canvasHeight); }
-
-        public void SetCanvasLeftPosition(int x, int canvasWidth) { this.LeftPosition = (int)(((double)x / (double)canvasWidth) * 100.0); }
-        public void SetCanvasTopPosition(int y, int canvasHeight) { this.TopPosition = (int)(((double)y / (double)canvasHeight) * 100.0); }
     }
 }

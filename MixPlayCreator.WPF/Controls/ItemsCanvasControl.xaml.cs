@@ -19,31 +19,24 @@ namespace MixPlayCreator.WPF.Controls
             InitializeComponent();
         }
 
-        public Tuple<int, int> GetCanvasSize() { return new Tuple<int, int>((int)this.CanvasRender.ActualWidth, (int)this.CanvasRender.ActualHeight); }
+        public Tuple<double, double> GetCanvasSize() { return new Tuple<double, double>(this.CanvasRender.ActualWidth, this.CanvasRender.ActualHeight); }
 
         public void RefreshChildren()
         {
             this.CanvasRender.Children.Clear();
-            Tuple<int, int> canvasSize = this.GetCanvasSize();
+            Tuple<double, double> canvasSize = this.GetCanvasSize();
             foreach (ItemViewModel item in App.CurrentScene.Items)
             {
-                this.AddItemToCanvas(item, item.GetCanvasLeftPosition(canvasSize.Item1), item.GetCanvasTopPosition(canvasSize.Item2));
+                this.AddItemToCanvas(item, ((0.01 * item.XPosition) * canvasSize.Item1), ((0.01 * item.YPosition) * canvasSize.Item2));
             }
         }
 
-        public void SetItemCoordinates(FrameworkElement item, int x, int y)
+        public void SetItemCoordinates(FrameworkElement item, double x, double y)
         {
-            x = MathHelper.Clamp(x, 0, (int)(this.CanvasRender.ActualWidth - item.ActualWidth));
-            y = MathHelper.Clamp(y, 0, (int)(this.CanvasRender.ActualHeight - item.ActualHeight));
+            x = MathHelper.Clamp(x, 0.0, this.CanvasRender.ActualWidth - item.ActualWidth);
+            y = MathHelper.Clamp(y, 0.0, this.CanvasRender.ActualHeight - item.ActualHeight);
             Canvas.SetLeft(item, x);
             Canvas.SetTop(item, y);
-        }
-
-        public Tuple<int, int> GetItemCoordinates(FrameworkElement item) { return new Tuple<int, int>((int)Canvas.GetLeft(item), (int)Canvas.GetTop(item)); }
-
-        public void SetItemZIndex(ItemControlBase item)
-        {
-            Canvas.SetZIndex(item, item.Item.ZIndex);
         }
 
         public void RemoveSelectedItem(FrameworkElement item)
@@ -62,16 +55,16 @@ namespace MixPlayCreator.WPF.Controls
                 switch (type)
                 {
                     case ItemTypeEnum.Text:
-                        this.AddNewItemToCanvas(new TextItemViewModel(), (int)dropPoint.X, (int)dropPoint.Y);
+                        this.AddNewItemToCanvas(new TextItemViewModel(), dropPoint.X, dropPoint.Y);
                         break;
                     case ItemTypeEnum.Image:
-                        this.AddNewItemToCanvas(new ImageItemViewModel(), (int)dropPoint.X, (int)dropPoint.Y);
+                        this.AddNewItemToCanvas(new ImageItemViewModel(), dropPoint.X, dropPoint.Y);
                         break;
                     case ItemTypeEnum.Sound:
                         this.AddNewItem(new SoundItemViewModel());
                         break;
                     case ItemTypeEnum.Video:
-                        this.AddNewItemToCanvas(new VideoItemViewModel(), (int)dropPoint.X, (int)dropPoint.Y);
+                        this.AddNewItemToCanvas(new VideoItemViewModel(), dropPoint.X, dropPoint.Y);
                         break;
                 }
                 e.Effects = DragDropEffects.Move;
@@ -94,7 +87,7 @@ namespace MixPlayCreator.WPF.Controls
             ItemViewModel.ItemAdded(item);
         }
 
-        private void AddNewItemToCanvas(ItemViewModel item, int x, int y)
+        private void AddNewItemToCanvas(ItemViewModel item, double x, double y)
         {
             App.CurrentScene.Items.Add(item);
 
@@ -103,7 +96,7 @@ namespace MixPlayCreator.WPF.Controls
             this.AddItemToCanvas(item, x, y, isNewItem: true);
         }
 
-        private void AddItemToCanvas(ItemViewModel item, int x, int y, bool isNewItem = false)
+        private void AddItemToCanvas(ItemViewModel item, double x, double y, bool isNewItem = false)
         {
             switch (item.Type)
             {
@@ -119,7 +112,7 @@ namespace MixPlayCreator.WPF.Controls
             }
         }
 
-        private void AddItemControlToCanvas(ItemControlBase item, int x, int y, bool isNewItem = false)
+        private void AddItemControlToCanvas(ItemControlBase item, double x, double y, bool isNewItem = false)
         {
             item.ItemCanvas = this;
             item.Loaded += Item_Loaded;
@@ -137,11 +130,11 @@ namespace MixPlayCreator.WPF.Controls
         {
             ItemControlBase item = (ItemControlBase)sender;
 
-            this.SetItemCoordinates(item, (int)Canvas.GetLeft(item) - (int)(item.ActualWidth / 2), (int)Canvas.GetTop(item) - (int)(item.ActualHeight / 2));
+            this.SetItemCoordinates(item, Canvas.GetLeft(item) - (item.ActualWidth / 2.0), Canvas.GetTop(item) - (item.ActualHeight / 2.0));
 
             item.UpdateModelPosition();
             
-            this.SetItemZIndex(item);
+            item.SetItemZIndex();
         }
 
         private void Item_NewLoaded(object sender, RoutedEventArgs e)
