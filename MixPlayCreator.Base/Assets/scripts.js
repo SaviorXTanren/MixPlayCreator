@@ -2,6 +2,8 @@ var zIndexCounter = 0;
 
 var mainDiv;
 
+var mediaPlaying = {};
+
 $.fn.extend({
 	animateCss: function (animationName, callback) {
 		var animationEnd = (function (el) {
@@ -48,36 +50,94 @@ function addText(id, scene, text, size, color, font, horizontal, vertical, visib
     addElement(newElement, id, scene, horizontal, vertical, visible, makeButton);
 }
 
-function addElement(newElement, id, scene, horizontal, vertical, visible, makeButton) {
-    if (newElement != null) {
-        newElement.id = id;
-        newElement.style.cssText += 'position: absolute; left: ' + horizontal.toString() + '%; top: ' + vertical.toString() + '%; transform: translate(-50%, -50%);'
-        newElement.style.zIndex = zIndexCounter++;
+function playSound(link) {
+    if (mediaPlaying[link]) {
+        return;
+    }
+    mediaPlaying[link] = true;
+
+    var audio = new Audio(link);
+    audio.play();
+
+    setTimeout(function () {
+        mediaPlaying[link] = false;
+    }, 2000);
+}
+
+function playVideo(link) {
+    if (mediaPlaying[link]) {
+        return;
+    }
+    mediaPlaying[link] = true;
+
+    var newElement = document.createElement('video');
+    newElement.width = 600;
+    newElement.height = 400;
+    newElement.frameBorder = 0;
+    newElement.allow = "encrypted-media";
+    newElement.setAttribute('autoplay', '');
+
+    var sourceElement = document.createElement('source');
+    sourceElement.src = link;
+    if (link.endsWith(".mp4")) {
+        sourceElement.type = "video/mp4";
+    }
+    else if (link.endsWith(".webm")) {
+        sourceElement.type = "video/webm";
+    }
+    newElement.appendChild(sourceElement);
+
+    addElement(newElement, link, "Video", 50, 50, true, false);
+
+    var promise = newElement.play();
+    if (promise !== undefined) {
+        promise.then(_ => {
+            // Autoplay started!
+        }).catch(error => {
+            removeElement(newElement);
+        });
+    }
+
+    newElement.onended = function () {
+        removeElement(newElement);
+    };
+
+    setTimeout(function () {
+        mediaPlaying[link] = false;
+    }, 2000);
+}
+
+function addElement(element, id, scene, horizontal, vertical, visible, makeButton) {
+    if (element != null) {
+        element.id = id;
+        element.style.cssText += 'position: absolute; left: ' + horizontal.toString() + '%; top: ' + vertical.toString() + '%; transform: translate(-50%, -50%);'
+        element.style.zIndex = zIndexCounter++;
 
         if (!visible) {
-            newElement.style.cssText += 'visibility: hidden;'
+            element.style.cssText += 'visibility: hidden;'
         }
 
         if (makeButton) {
-            newElement.addEventListener('click', function () { buttonClicked(id); }, false);
+            element.addEventListener('click', function () { buttonClicked(id); }, false);
         }
 
-        mainDiv.appendChild(newElement);
+        mainDiv.appendChild(element);
+    }
+}
+
+function removeElement(element) {
+    if (element != null) {
+        mainDiv.removeChild(element);
     }
 }
 
 function buttonClicked(id) {
+    playVideo("woah.mp4");
+
     mixer.socket.call('giveInput', {
         controlID: id,
         event: 'mousedown'
     });
-}
-
-function playSound(link) {
-    setTimeout(function () {
-        var audio = new Audio(link);
-        audio.play();
-    }, 100);
 }
 
 function handleVideoResized(position) {
@@ -105,16 +165,16 @@ function handleControlUpdate(update) {
                         element.style.cssText += 'visibility: hidden;'
                     }
                 }
+
                 if (metadata.playsound != null) {
                     playSound(metadata.playsound);
                 }
+
+                if (metadata.playvideo != null) {
+                    playVideo(metadata.playvideo);
+                }
             }
         }
-    }
-
-    const filteredControls = update.controls.filter(c => c.controlID === 'position');
-    if (filteredControls.length !== 1) {
-        return;
     }
 }
 
