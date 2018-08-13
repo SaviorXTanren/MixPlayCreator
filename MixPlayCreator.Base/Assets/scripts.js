@@ -180,6 +180,10 @@ function handleControlUpdate(update) {
                     element.innerHTML = metadata.text;
                 }
 
+                if (metadata.source != null) {
+                    element.src = source;
+                }
+
                 if (metadata.playsound != null) {
                     playSound(metadata.playsound);
                 }
