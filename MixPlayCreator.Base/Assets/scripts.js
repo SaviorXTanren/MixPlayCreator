@@ -168,6 +168,18 @@ function handleControlUpdate(update) {
                     }
                 }
 
+                if (metadata.xposition != null) {
+                    element.style.left = metadata.xposition + "%";
+                }
+
+                if (metadata.yposition != null) {
+                    element.style.top = metadata.yposition + "%";
+                }
+
+                if (metadata.text != null) {
+                    element.innerHTML = metadata.text;
+                }
+
                 if (metadata.playsound != null) {
                     playSound(metadata.playsound);
                 }
