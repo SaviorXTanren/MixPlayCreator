@@ -257,5 +257,8 @@
   <ItemGroup>
     <Resource Include="Assets\VideoItem.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\PreviewProject.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

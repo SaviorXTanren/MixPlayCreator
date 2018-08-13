@@ -142,40 +142,58 @@ namespace MixPlayCreator.WPF
         {
             await this.LoadingOperation(async () =>
             {
-                if (App.Project != null)
+                await this.SaveProject();
+            });
+        }
+
+        private async void PreviewProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            await this.LoadingOperation(async () =>
+            {
+                if (await this.SaveProject())
                 {
-                    HashSet<string> itemIDs = new HashSet<string>();
-                    foreach (SceneViewModel scene in App.Project.Scenes)
-                    {
-                        foreach (ItemViewModel item in scene.Items)
-                        {
-                            if (itemIDs.Contains(item.Name))
-                            {
-                                await DialogHelper.ShowMessageDialog(string.Format("There already exists an item called {0}. Please rename it to something unique.", item.Name));
-                                return;
-                            }
-                            itemIDs.Add(item.Name);
-                        }
-                    }
-
-                    if (string.IsNullOrEmpty(App.Project.SettingsFilePath))
-                    {
-                        SaveFileDialog fileDialog = new SaveFileDialog();
-                        fileDialog.Filter = CDKProjectViewModel.MixPlayCreatorSettingsFileBrowserFilter;
-                        fileDialog.CheckPathExists = true;
-                        fileDialog.FileName = App.Project.DefaultSettingFileName;
-                        if (fileDialog.ShowDialog() == true)
-                        {
-                            App.Project.SettingsFilePath = fileDialog.FileName;
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(App.Project.SettingsFilePath))
-                    {
-                        await App.Project.Save();
-                    }
+                    Process.Start(App.Project.IndexHTMLFilePath);
                 }
             });
+        }
+
+        private async Task<bool> SaveProject()
+        {
+            if (App.Project != null)
+            {
+                HashSet<string> itemIDs = new HashSet<string>();
+                foreach (SceneViewModel scene in App.Project.Scenes)
+                {
+                    foreach (ItemViewModel item in scene.Items)
+                    {
+                        if (itemIDs.Contains(item.Name))
+                        {
+                            await DialogHelper.ShowMessageDialog(string.Format("There already exists an item called {0}. Please rename it to something unique.", item.Name));
+                            return false;
+                        }
+                        itemIDs.Add(item.Name);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(App.Project.SettingsFilePath))
+                {
+                    SaveFileDialog fileDialog = new SaveFileDialog();
+                    fileDialog.Filter = CDKProjectViewModel.MixPlayCreatorSettingsFileBrowserFilter;
+                    fileDialog.CheckPathExists = true;
+                    fileDialog.FileName = App.Project.DefaultSettingFileName;
+                    if (fileDialog.ShowDialog() == true)
+                    {
+                        App.Project.SettingsFilePath = fileDialog.FileName;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(App.Project.SettingsFilePath))
+                {
+                    await App.Project.Save();
+                    return true;
+                }
+            }
+            return false;
         }
 
         private async void UploadProjectButton_Click(object sender, RoutedEventArgs e)

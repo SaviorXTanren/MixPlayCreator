@@ -74,13 +74,19 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Button x:Name="SaveProjectButton" Grid.Column="0" Click="SaveProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Save Project">
                     <Image Source="/Assets/SaveProject.png" />
                 </Button>
 
-                <Button x:Name="UploadProjectButton" Grid.Column="2" Click="UploadProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Upload Project">
+                <Button x:Name="PreviewProjectButton" Grid.Column="2" Click="PreviewProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Preview Project">
+                    <Image Source="/Assets/PreviewProject.png" />
+                </Button>
+
+                <Button x:Name="UploadProjectButton" Grid.Column="4" Click="UploadProjectButton_Click" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Upload Project">
                     <Image Source="/Assets/UploadProject.png" />
                 </Button>
             </Grid>
