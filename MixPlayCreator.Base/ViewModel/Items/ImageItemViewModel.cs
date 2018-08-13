@@ -47,6 +47,8 @@ namespace MixPlayCreator.Base.ViewModel.Items
 
         public Uri SourceUri { get { return new Uri(this.SourcePath, UriKind.RelativeOrAbsolute); } }
 
+        public bool DefaultImageVisible { get { return string.IsNullOrEmpty(this.SourcePath); } }
+
         public bool StaticImageVisible { get { return !this.GifImageVisible; } }
 
         public bool GifImageVisible
